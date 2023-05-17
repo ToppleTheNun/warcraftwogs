@@ -1,0 +1,83 @@
+{
+  "name": "warcraft-wogs",
+  "author": "Richard Harrah",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "scripts": {
+    "build": "tsx scripts/generate-env.ts && remix build",
+    "dev": "tsx scripts/generate-env.ts && remix dev",
+    "gql": "nr gql:introspection && nr gql:generate",
+    "gql:generate": "graphql-codegen --config codegen.yml && prettier --write app/wcl/types.ts && prettier --write schema.json && prettier --write app/wcl/gql/schema.graphql",
+    "gql:introspection": "tsx -r dotenv/config app/wcl/queries/introspection.ts",
+    "lint": "eslint app && prettier -c app",
+    "lint:fix": "eslint --fix app && prettier --write app",
+    "prepare": "prisma generate",
+    "prisma": "nr prisma:generate && nr prisma:migrate && nr prisma:seed",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:push": "prisma db push",
+    "prisma:seed": "prisma db seed",
+    "start": "tsx scripts/generate-env.ts && remix-serve build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@prisma/client": "4.14.0",
+    "@remix-run/css-bundle": "1.16.0",
+    "@remix-run/node": "1.16.0",
+    "@remix-run/react": "1.16.0",
+    "@remix-run/serve": "1.16.0",
+    "@upstash/redis": "1.20.6",
+    "@vercel/analytics": "1.0.1",
+    "@vercel/remix": "1.16.0-patch.1",
+    "clsx": "1.2.1",
+    "date-fns": "2.30.0",
+    "dotenv": "16.0.3",
+    "graphql": "16.6.0",
+    "graphql-request": "5.1.0",
+    "graphql-tag": "2.12.6",
+    "isbot": "3.6.10",
+    "lucide-react": "0.218.0",
+    "react": "18.2.0",
+    "react-aria": "3.24.0",
+    "react-dom": "18.2.0",
+    "react-stately": "3.22.0",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "@antfu/ni": "0.21.3",
+    "@graphql-codegen/cli": "3.3.1",
+    "@graphql-codegen/introspection": "3.0.1",
+    "@graphql-codegen/typescript": "3.0.4",
+    "@graphql-codegen/typescript-graphql-request": "4.5.9",
+    "@graphql-codegen/typescript-operations": "3.0.4",
+    "@remix-run/dev": "1.16.0",
+    "@remix-run/eslint-config": "1.16.0",
+    "@types/node": "^18",
+    "@types/prettier": "2.7.2",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "eslint": "8.40.0",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "prettier": "2.8.8",
+    "prettier-plugin-pkg": "0.17.1",
+    "prettier-plugin-tailwindcss": "0.3.0",
+    "prisma": "4.14.0",
+    "tailwindcss": "3.3.2",
+    "tsx": "3.12.7",
+    "typescript": "5.0.4"
+  },
+  "sideEffects": false,
+  "graphql": {
+    "schema": "./schema.json"
+  },
+  "prettier": {
+    "plugins": [
+      "prettier-plugin-pkg",
+      "prettier-plugin-tailwindcss"
+    ]
+  }
+}
