@@ -1,0 +1,55 @@
+query getFights($reportID: String!) {
+  reportData {
+    report(code: $reportID) {
+      title
+      startTime
+      endTime
+
+      region {
+        slug
+      }
+
+      fights(translate: true) {
+        id
+        startTime
+        endTime
+
+        difficulty
+      }
+    }
+  }
+}
+
+query getWordOfGloryHealingEvents($reportID: String!, $fightIDs: [Int]!) {
+  reportData {
+    report(code: $reportID) {
+      title
+      startTime
+      endTime
+
+      region {
+        slug
+      }
+
+      events(abilityID: 85673, dataType: Healing, fightIDs: $fightIDs) {
+        data
+      }
+    }
+  }
+}
+
+query getPlayerDetails($reportID: String!, $fightIDs: [Int]!) {
+  reportData {
+    report(code: $reportID) {
+      title
+      startTime
+      endTime
+
+      region {
+        slug
+      }
+
+      playerDetails(fightIDs: $fightIDs)
+    }
+  }
+}

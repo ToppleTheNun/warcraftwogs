@@ -1,0 +1,14 @@
+overwrite: true
+schema: './app/wcl/gql/schema.graphql'
+documents: './app/wcl/**/*.graphql'
+generates:
+  ./app/wcl/types.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-graphql-request"
+    config:
+      useTypeImports: true
+  ./schema.json:
+    plugins:
+      - "introspection"
