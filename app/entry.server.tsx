@@ -14,7 +14,7 @@ import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
 import { prisma } from "~/db";
-import { env } from "~/env/client";
+import { env } from "~/env/server";
 
 const ABORT_DELAY = 5_000;
 

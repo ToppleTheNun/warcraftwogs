@@ -16,7 +16,11 @@ export const clientSchema = z.object({
 /**
  * Can't destruct `process.env` on client-side, so destruct here instead.
  */
-export const clientProcessEnv = { ...generated };
+export const clientProcessEnv = {
+  ...generated,
+  SENTRY_DSN: process.env.SENTRY_DSN,
+  VERCEL_ANALYTICS_ID: process.env.VERCEL_ANALYTICS_ID,
+};
 
 const parsed = clientSchema.safeParse(clientProcessEnv);
 if (!parsed.success) {

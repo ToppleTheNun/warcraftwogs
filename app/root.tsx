@@ -1,4 +1,9 @@
-import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
+import type {
+  LinksFunction, SerializeFrom,
+  TypedResponse,
+  V2_MetaFunction
+} from "@remix-run/node";
+import { json } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -6,11 +11,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
 import { Analytics } from "@vercel/analytics/react";
 import { SSRProvider } from "react-aria";
 
+import { env } from "~/env/client";
 import stylesheet from "~/tailwind.css";
 
 export const links: LinksFunction = () => {
@@ -81,7 +88,26 @@ export const meta: V2_MetaFunction = () => {
     { property: "theme-color", content: "#ffffff" },
   ];
 };
+
+export const loader = (): TypedResponse<{ ENV: Record<string, unknown> }> => {
+  return json({
+    ENV: {
+      SENTRY_DSN: env.SENTRY_DSN,
+      VERCEL_ANALYTICS_ID: env.VERCEL_ANALYTICS_ID,
+    },
+  });
+};
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
+  interface Window {
+    ENV: SerializeFrom<typeof loader>["ENV"];
+  }
+}
+
 function App() {
+  const data = useLoaderData<typeof loader>();
+
   return (
     <html
       lang="en"
@@ -101,9 +127,6 @@ function App() {
           </SSRProvider>
         </div>
         <ScrollRestoration />
-        <Scripts />
-        <LiveReload />
-        <Analytics />
         <script
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
@@ -113,9 +136,17 @@ function App() {
           }}
         />
         <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
+        <script
           src="https://wow.zamimg.com/js/tooltips.js"
           type="text/javascript"
         />
+        <Scripts />
+        <LiveReload />
+        <Analytics />
       </body>
     </html>
   );

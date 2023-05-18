@@ -1,7 +1,5 @@
 import { type Metric } from "web-vitals";
 
-import { env } from "~/env/client";
-
 const vitalsUrl = "https://vitals.vercel-analytics.com/v1/vitals";
 
 declare global {
@@ -14,7 +12,7 @@ declare global {
 }
 
 export function sendToVercelAnalytics(metric: Metric): void {
-  const analyticsId = env.VERCEL_ANALYTICS_ID;
+  const analyticsId = window.ENV.VERCEL_ANALYTICS_ID;
 
   if (!analyticsId) {
     return;
