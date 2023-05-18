@@ -103,6 +103,18 @@ export default function App() {
         <Scripts />
         <LiveReload />
         <Analytics />
+        <script
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: `
+        const whTooltips = { colorLinks: true, iconizeLinks: true };
+        `,
+          }}
+        />
+        <script
+          src="https://wow.zamimg.com/js/tooltips.js"
+          type="text/javascript"
+        />
       </body>
     </html>
   );

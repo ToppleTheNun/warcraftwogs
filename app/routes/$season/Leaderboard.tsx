@@ -1,7 +1,6 @@
 import type { Regions } from "@prisma/client";
 import { useNavigation } from "@remix-run/react";
 import clsx from "clsx";
-import formatISO from "date-fns/formatISO";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import type { EnhancedSeason } from "~/seasons";

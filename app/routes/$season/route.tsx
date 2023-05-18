@@ -16,6 +16,7 @@ import { getEnhancedSeason } from "~/models/season.server";
 import { Footer } from "~/routes/$season/Footer";
 import { Header } from "~/routes/$season/Header";
 import { Leaderboard } from "~/routes/$season/Leaderboard";
+import { basisLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { findSeasonByName } from "~/seasons";
 import type { Timings } from "~/timing.server";
@@ -135,7 +136,18 @@ export default function Season(): JSX.Element {
     <>
       <Header season={season} />
       <main className="container mt-4 flex max-w-screen-2xl flex-1 flex-col space-y-4 px-4 md:mx-auto 2xl:px-0">
-        <h1 className="text-lg">Word of Glory Healing Leaderboard</h1>
+        <h1 className="text-lg">
+          <a
+            className={basisLinkClassName}
+            data-wowhead="spell=85673"
+            href="https://www.wowhead.com/spell=85673/word-of-glory"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Word of Glory
+          </a>{" "}
+          (WoG) Healing Leaderboard
+        </h1>
         {season.regionsToDisplay.map((region) => (
           <Leaderboard key={region} region={region} season={season} />
         ))}
