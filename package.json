@@ -8,7 +8,7 @@
     "node": ">=16"
   },
   "scripts": {
-    "build": "tsx scripts/generate-env.ts && remix build",
+    "build": "tsx scripts/generate-env.ts && remix build --sourcemap",
     "dev": "tsx scripts/generate-env.ts && remix dev",
     "gql": "nr gql:introspection && nr gql:generate",
     "gql:generate": "graphql-codegen --config codegen.yml && prettier --write app/wcl/types.ts && prettier --write schema.json && prettier --write app/wcl/gql/schema.graphql",
@@ -24,7 +24,7 @@
     "prisma:seed": "prisma db seed",
     "start": "tsx scripts/generate-env.ts && remix-serve build",
     "typecheck": "tsc",
-    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build"
+    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build && sentry-upload-sourcemaps && rimraf build/index.js.map"
   },
   "dependencies": {
     "@prisma/client": "4.14.0",
@@ -73,6 +73,7 @@
     "prettier-plugin-pkg": "0.17.1",
     "prettier-plugin-tailwindcss": "0.3.0",
     "prisma": "4.14.0",
+    "rimraf": "5.0.1",
     "tailwindcss": "3.3.2",
     "tsconfig-paths": "4.2.0",
     "tsx": "3.12.7",
