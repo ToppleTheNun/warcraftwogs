@@ -24,7 +24,7 @@
     "prisma:seed": "prisma db seed",
     "start": "tsx scripts/generate-env.ts && remix-serve build",
     "typecheck": "tsc",
-    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build && sentry-upload-sourcemaps && rimraf build/index.js.map"
+    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build && sentry-upload-sourcemaps && rimraf build/*.map && rimraf public/build/*.map && rimraf public/build/**/*.map"
   },
   "dependencies": {
     "@prisma/client": "4.14.0",
