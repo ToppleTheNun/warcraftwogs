@@ -14,8 +14,3 @@ export const getReportCode = (input: string): string | undefined => {
 export const isRegion = (x: string): x is Regions => {
   return orderedRegionsBySize.includes(x as Regions);
 };
-
-export const offsetDate = (date: Date, offset: number = 0) => {
-  date.setMinutes(date.getMinutes() + offset);
-  return date.toISOString();
-};

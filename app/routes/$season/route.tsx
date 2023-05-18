@@ -89,8 +89,6 @@ export const loader = async ({
     });
   }
 
-  const clockOffset = request.headers.get("Cookie")?.match(/clockOffset=(\d+)/);
-
   const timings: Timings = {};
 
   const searchParamRegions = await time(
@@ -121,7 +119,6 @@ export const loader = async ({
         regions,
         season,
         timings,
-        clockOffsetMinutes: clockOffset ? parseInt(clockOffset[1], 10) : 0,
       }),
     { type: "getEnhancedSeason", timings }
   );

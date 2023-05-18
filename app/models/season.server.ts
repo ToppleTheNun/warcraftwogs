@@ -17,7 +17,6 @@ type GetEnhancedSeasonParams = {
   regions: Regions[] | null;
   season: Season;
   timings: Timings;
-  clockOffsetMinutes: number;
 };
 
 type GetEnhancedSeasonResult = {
@@ -29,7 +28,6 @@ export const getEnhancedSeason = async ({
   regions: pRegions,
   season,
   timings,
-  clockOffsetMinutes,
 }: GetEnhancedSeasonParams): Promise<GetEnhancedSeasonResult> => {
   const headers: HeadersInit = {};
 
@@ -58,8 +56,7 @@ export const getEnhancedSeason = async ({
       enhancedSeason.dataByRegion[region] = await loadDataForRegion(
         region,
         season,
-        timings,
-        clockOffsetMinutes
+        timings
       );
     })
   );

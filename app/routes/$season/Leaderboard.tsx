@@ -28,11 +28,7 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => (
     <td className="px-6 py-4">{entry.heal}</td>
     <td className="px-6 py-4">{entry.overheal}</td>
     <td className="px-6 py-4">{entry.totalHeal}</td>
-    <td className="px-6 py-4">
-      <time dateTime={formatISO(entry.timestamp)}>
-        {formatISO(entry.timestamp)}
-      </time>
-    </td>
+    <td className="px-6 py-4">PLACEHOLDER</td>
     <td className="px-6 py-4">
       <a
         href={`https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events`}

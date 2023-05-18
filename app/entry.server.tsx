@@ -96,31 +96,12 @@ function handleBrowserRequest(
 
           responseHeaders.set("Content-Type", "text/html");
 
-          if (!request.headers.get("cookie")?.includes("clockOffset")) {
-            const script = `
-    document.cookie = 'clockOffset=' + (new Date().getTimezoneOffset() * -1) + '; path=/';
-    window.location.reload();
-  `;
-            resolve(
-              new Response(
-                `<html><body><script>${script}</script></body></html>`,
-                {
-                  headers: {
-                    ...responseHeaders,
-                    "Set-Cookie": "clockOffset=0; path=/",
-                    Refresh: `0; url=${request.url}`,
-                  },
-                }
-              )
-            );
-          } else {
-            resolve(
-              new Response(body, {
-                headers: responseHeaders,
-                status: responseStatusCode,
-              })
-            );
-          }
+          resolve(
+            new Response(body, {
+              headers: responseHeaders,
+              status: responseStatusCode,
+            })
+          );
 
           pipe(body);
         },

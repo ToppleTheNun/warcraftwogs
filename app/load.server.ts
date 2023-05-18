@@ -1,6 +1,5 @@
 import type { Prisma } from "@prisma/client";
 import { Regions } from "@prisma/client";
-import addMinutes from "date-fns/addMinutes";
 
 import { regions } from "~/cookies";
 import { prisma } from "~/db";
@@ -124,8 +123,7 @@ export const loadLeaderboardEntriesForReport = async (
 export const loadDataForRegion = async (
   region: Regions,
   season: Season,
-  timings: Timings,
-  clockOffsetMinutes: number
+  timings: Timings
 ): Promise<WordOfGloryLeaderboardEntry[]> => {
   const dateTimeFilter: Prisma.DateTimeFilter = {};
   const seasonStart = season.startDates[region];
@@ -161,21 +159,18 @@ export const loadDataForRegion = async (
     { type: "prisma.wordOfGlory.findMany", timings }
   );
 
-  return leaderboardEntries.map<WordOfGloryLeaderboardEntry>((entry) => {
-    const timestamp = addMinutes(entry.createdAt, clockOffsetMinutes);
-    return {
-      name: entry.character.name,
-      realm: entry.character.server,
-      region: entry.character.region,
-      heal: entry.heal,
-      overheal: entry.overheal,
-      totalHeal: entry.totalHeal,
-      report: entry.report,
-      fight: entry.fight,
-      timestamp: timestamp.getTime(),
-      character: entry.character.wclGuid,
-    };
-  });
+  return leaderboardEntries.map<WordOfGloryLeaderboardEntry>((entry) => ({
+    name: entry.character.name,
+    realm: entry.character.server,
+    region: entry.character.region,
+    heal: entry.heal,
+    overheal: entry.overheal,
+    totalHeal: entry.totalHeal,
+    report: entry.report,
+    fight: entry.fight,
+    timestamp: entry.createdAt.getTime(),
+    character: entry.character.wclGuid,
+  }));
 };
 
 export const determineRegionsToDisplayFromSearchParams = (
