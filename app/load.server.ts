@@ -44,16 +44,19 @@ export const loadLeaderboardEntriesForReport = async (
     return [];
   }
 
-  const fightIds = fights.filter(isPresent).map<number>((fight) => fight.id);
-  if (fightIds.length === 0) {
+  const fightIDs = fights
+    .filter(isPresent)
+    .filter((fight) => isPresent(fight.difficulty))
+    .map<number>((fight) => fight.id);
+  if (fightIDs.length === 0) {
     return [];
   }
 
   const rawWordOfGloryHealingEvents = await time(
     () =>
       getWordOfGloryHealing({
-        reportID: "qw9QL7RPAKNC3jx2",
-        fightIDs: fightIds,
+        reportID,
+        fightIDs,
       }),
     {
       type: "getWordOfGloryHealing",
@@ -74,8 +77,7 @@ export const loadLeaderboardEntriesForReport = async (
   );
 
   const rawPlayerDetails = await time(
-    () =>
-      getPlayerDetails({ reportID: "qw9QL7RPAKNC3jx2", fightIDs: fightIds }),
+    () => getPlayerDetails({ reportID, fightIDs }),
     {
       type: "getPlayerDetails",
       timings,
@@ -169,7 +171,7 @@ export const loadDataForRegion = async (
     report: entry.report,
     fight: entry.fight,
     timestamp: entry.createdAt.getTime(),
-    character: entry.character.wclGuid,
+    character: entry.character.id,
   }));
 };
 

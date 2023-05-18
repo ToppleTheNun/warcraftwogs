@@ -11,18 +11,17 @@ CREATE TABLE "WordOfGlory" (
     "totalHeal" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "characterId" TEXT NOT NULL,
+    "characterId" INTEGER NOT NULL,
 
     CONSTRAINT "WordOfGlory_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Character" (
-    "id" TEXT NOT NULL,
+    "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "server" TEXT NOT NULL,
     "region" "Regions" NOT NULL,
-    "wclGuid" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

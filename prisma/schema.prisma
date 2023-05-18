@@ -20,16 +20,15 @@ model WordOfGlory {
   updatedAt DateTime @updatedAt
 
   character   Character @relation(fields: [characterId], references: [id])
-  characterId String
+  characterId Int
 }
 
 model Character {
-  id String @id @default(cuid())
+  id Int @id
 
-  name    String
-  server  String
-  region  Regions
-  wclGuid Int     @unique
+  name   String
+  server String
+  region Regions
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
