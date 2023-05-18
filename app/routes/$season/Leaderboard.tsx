@@ -6,6 +6,7 @@ import enUS from "date-fns/locale/en-US";
 import { useEffect, useState } from "react";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
+import { Spinner } from "~/routes/$season/Spinner";
 import type { EnhancedSeason } from "~/seasons";
 
 interface LeaderboardRowProps {
@@ -37,7 +38,7 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
       <td className="px-6 py-4">{entry.heal}</td>
       <td className="px-6 py-4">{entry.overheal}</td>
       <td className="px-6 py-4">{entry.totalHeal}</td>
-      <td className="px-6 py-4">{timestamp}</td>
+      <td className="px-6 py-4">{timestamp ? timestamp : <Spinner />}</td>
       <td className="px-6 py-4">
         <a
           href={`https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events`}
@@ -67,12 +68,11 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
       aria-labelledby={`title-${region}`}
       id={region}
     >
-      <h1 id={`title-${region}`} className="text-center text-lg font-bold">
-        {region.toUpperCase()}
-      </h1>
-
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+          <caption className="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white">
+            {region.toUpperCase()}
+          </caption>
           <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">

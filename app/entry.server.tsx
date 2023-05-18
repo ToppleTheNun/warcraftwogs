@@ -9,10 +9,25 @@ import { PassThrough } from "node:stream";
 import type { EntryContext } from "@remix-run/node";
 import { Response } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
+import * as Sentry from "@sentry/remix";
 import isbot from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
+import { prisma } from "~/db";
+import { env } from "~/env/client";
+
 const ABORT_DELAY = 5_000;
+
+if (env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: env.SENTRY_DSN,
+    integrations: [new Sentry.Integrations.Prisma({ client: prisma })],
+    // Set tracesSampleRate to 1.0 to capture 100%
+    // of transactions for performance monitoring.
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
+  });
+}
 
 export default function handleRequest(
   request: Request,

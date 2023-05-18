@@ -9,6 +9,8 @@ export const clientSchema = z.object({
   BUILD_TIME: z.string(),
   BUILD_TIMESTAMP: z.string(),
   COMMIT_SHA: z.string(),
+  SENTRY_DSN: z.string().optional(),
+  VERCEL_ANALYTICS_ID: z.string().optional(),
 });
 
 /**

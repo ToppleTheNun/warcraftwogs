@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { withSentry } from "@sentry/remix";
 import { Analytics } from "@vercel/analytics/react";
 import { SSRProvider } from "react-aria";
 
@@ -80,7 +81,7 @@ export const meta: V2_MetaFunction = () => {
     { property: "theme-color", content: "#ffffff" },
   ];
 };
-export default function App() {
+function App() {
   return (
     <html
       lang="en"
@@ -119,3 +120,5 @@ export default function App() {
     </html>
   );
 }
+
+export default withSentry(App);

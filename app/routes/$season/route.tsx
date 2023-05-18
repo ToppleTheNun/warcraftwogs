@@ -138,6 +138,7 @@ export default function Season(): JSX.Element {
       <main className="container mt-4 flex max-w-screen-2xl flex-1 flex-col space-y-4 px-4 md:mx-auto 2xl:px-0">
         <h1 className="text-lg">
           <a
+            suppressHydrationWarning
             className={basisLinkClassName}
             data-wowhead="spell=85673"
             href="https://www.wowhead.com/spell=85673/word-of-glory"
