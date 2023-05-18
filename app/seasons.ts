@@ -17,7 +17,7 @@ export type EnhancedSeason = Season & {
   regionsToDisplay: Regions[];
 };
 
-export const seasons: Season[] = [
+export const seasons: readonly Season[] = [
   {
     name: "DF S2",
     slug: "df-season-2",
@@ -54,7 +54,7 @@ export const seasons: Season[] = [
     seasonIcon:
       "https://wow.zamimg.com/images/wow/icons/small/shaman_pvp_leaderclan.jpg",
   },
-];
+] as const;
 
 export const hasSeasonEndedForAllRegions = (slug: string): boolean => {
   const season = seasons.find((season) => season.slug === slug);

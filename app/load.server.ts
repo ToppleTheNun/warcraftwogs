@@ -7,7 +7,7 @@ import type { Season } from "~/seasons";
 import type { Timings } from "~/timing.server";
 import { time } from "~/timing.server";
 import { isPresent } from "~/typeGuards";
-import { orderedRegionsBySize } from "~/utils";
+import { isRegion, orderedRegionsBySize } from "~/utils";
 import {
   getInitialReportData,
   getPlayerDetails,
@@ -29,19 +29,28 @@ export type WordOfGloryLeaderboardEntry = {
   character: number;
 };
 
+export type WordOfGloryLeaderboardIngestion = {
+  entries: WordOfGloryLeaderboardEntry[];
+  region?: Regions;
+};
+
 export const loadLeaderboardEntriesForReport = async (
   reportID: string,
   timings: Timings
-): Promise<WordOfGloryLeaderboardEntry[]> => {
+): Promise<WordOfGloryLeaderboardIngestion> => {
   const rawFightData = await time(() => getInitialReportData({ reportID }), {
     type: "getInitialReportData",
     timings,
   });
   const fights = rawFightData.reportData?.report?.fights;
-  const reportRegion = rawFightData.reportData?.report?.region?.slug;
+  const reportRegion =
+    rawFightData.reportData?.report?.region?.slug?.toLowerCase();
   const startTime = rawFightData.reportData?.report?.startTime;
-  if (!startTime || !reportRegion || !fights) {
-    return [];
+  if (!startTime || !reportRegion || !isRegion(reportRegion) || !fights) {
+    console.error(
+      "!startTime || !reportRegion || !isRegion(reportRegion) || !fights"
+    );
+    return { entries: [] };
   }
 
   const fightIDs = fights
@@ -49,7 +58,8 @@ export const loadLeaderboardEntriesForReport = async (
     .filter((fight) => isPresent(fight.difficulty))
     .map<number>((fight) => fight.id);
   if (fightIDs.length === 0) {
-    return [];
+    console.error("fightIDs.length === 0");
+    return { entries: [] };
   }
 
   const rawWordOfGloryHealingEvents = await time(
@@ -70,7 +80,10 @@ export const loadLeaderboardEntriesForReport = async (
     !Array.isArray(wordOfGloryHealingEvents) ||
     wordOfGloryHealingEvents.length === 0
   ) {
-    return [];
+    console.error(
+      "!wordOfGloryHealingEvents || !Array.isArray(wordOfGloryHealingEvents) || wordOfGloryHealingEvents.length === 0"
+    );
+    return { entries: [] };
   }
   const sourceIdsForCasts = wordOfGloryHealingEvents.map<number>(
     (event) => event.sourceID
@@ -86,7 +99,8 @@ export const loadLeaderboardEntriesForReport = async (
   const playerDetails =
     rawPlayerDetails.reportData?.report?.playerDetails?.data?.playerDetails;
   if (!playerDetails) {
-    return [];
+    console.error("!playerDetails");
+    return { entries: [] };
   }
   const players = [
     ...playerDetails.dps,
@@ -94,7 +108,7 @@ export const loadLeaderboardEntriesForReport = async (
     ...playerDetails.tanks,
   ].filter((player) => sourceIdsForCasts.includes(player.id));
 
-  return wordOfGloryHealingEvents
+  const entries = wordOfGloryHealingEvents
     .map<WordOfGloryLeaderboardEntry | null>((event) => {
       const player = players.find((player) => player.id === event.sourceID);
       if (!player) {
@@ -120,6 +134,7 @@ export const loadLeaderboardEntriesForReport = async (
       };
     })
     .filter(isPresent);
+  return { entries, region: reportRegion };
 };
 
 export const loadDataForRegion = async (

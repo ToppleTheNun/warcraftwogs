@@ -1,7 +1,8 @@
 import type {
-  LinksFunction, SerializeFrom,
+  LinksFunction,
+  SerializeFrom,
   TypedResponse,
-  V2_MetaFunction
+  V2_MetaFunction,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {

@@ -9,12 +9,12 @@ export type ExternalLinkProps = Pick<
   children: ReactNode;
 };
 
-export function ExternalLink({
+export const ExternalLink = ({
   href,
   children,
   className,
   title,
-}: ExternalLinkProps): JSX.Element {
+}: ExternalLinkProps): JSX.Element => {
   return (
     <a
       href={href}
@@ -26,4 +26,4 @@ export function ExternalLink({
       {children}
     </a>
   );
-}
+};

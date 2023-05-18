@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import { Spinner } from "~/routes/$season/Spinner";
+import { basisLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 
 interface LeaderboardRowProps {
@@ -72,6 +73,20 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
         <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
           <caption className="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white">
             {region.toUpperCase()}
+            <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+              WoGs cast on targets with{" "}
+              <a
+                suppressHydrationWarning
+                className={basisLinkClassName}
+                data-wowhead="spell=255312"
+                href="https://www.wowhead.com/spell=255312/guardian-spirit"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Guardian Spirit
+              </a>{" "}
+              active are disqualified from the leaderboard.
+            </p>
           </caption>
           <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             <tr>

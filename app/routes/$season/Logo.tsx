@@ -1,6 +1,6 @@
 import { NavLink } from "@remix-run/react";
 
-export function Logo(): JSX.Element {
+export const Logo = (): JSX.Element => {
   return (
     <NavLink to="/" className="flex flex-row items-center space-x-4">
       <img
@@ -16,4 +16,4 @@ export function Logo(): JSX.Element {
       </span>
     </NavLink>
   );
-}
+};

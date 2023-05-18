@@ -32,7 +32,7 @@ import {
 import { type Season } from "~/seasons";
 import { seasons } from "~/seasons";
 
-export function SeasonMenu(): JSX.Element {
+export const SeasonMenu = (): JSX.Element => {
   const now = Date.now();
   const navigation = useNavigation();
   const [params] = useSearchParams();
@@ -121,7 +121,7 @@ export function SeasonMenu(): JSX.Element {
         })}
     </MenuButton>
   );
-}
+};
 
 type PopoverProps = {
   children: ReactNode;

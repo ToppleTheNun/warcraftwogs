@@ -6,7 +6,7 @@ import { env } from "~/env/client";
 import { ExternalLink } from "./ExternalLink";
 import { Logo } from "./Logo";
 
-export function Footer(): JSX.Element {
+export const Footer = (): JSX.Element => {
   return (
     <div className="px-6 text-stone-200 print:hidden">
       <footer className="mx-auto w-full max-w-screen-2xl">
@@ -108,7 +108,7 @@ export function Footer(): JSX.Element {
       </footer>
     </div>
   );
-}
+};
 
 function React() {
   return (

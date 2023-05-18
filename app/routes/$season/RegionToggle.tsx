@@ -12,7 +12,7 @@ type RegionToggleProps = {
   season: EnhancedSeason;
 };
 
-export function RegionToggle({ season }: RegionToggleProps): JSX.Element {
+export const RegionToggle = ({ season }: RegionToggleProps): JSX.Element => {
   const submit = useSubmit();
   const { state: navigationState } = useNavigation();
 
@@ -81,4 +81,4 @@ export function RegionToggle({ season }: RegionToggleProps): JSX.Element {
       </ul>
     </fieldset>
   );
-}
+};
