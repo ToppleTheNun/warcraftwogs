@@ -1,6 +1,9 @@
 import type { Regions } from "@prisma/client";
 import { useNavigation } from "@remix-run/react";
 import clsx from "clsx";
+import format from "date-fns/format";
+import enUS from "date-fns/locale/en-US";
+import { useEffect, useState } from "react";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import type { EnhancedSeason } from "~/seasons";
@@ -9,36 +12,44 @@ interface LeaderboardRowProps {
   entry: WordOfGloryLeaderboardEntry;
   idx: number;
 }
-const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => (
-  <tr
-    className={clsx("border-b dark:border-gray-700", {
-      "bg-white dark:bg-gray-900": idx % 2 === 0,
-      "bg-gray-50 dark:bg-gray-800": idx % 2 === 1,
-    })}
-  >
-    <th
-      scope="row"
-      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
+  const [timestamp, setTimestamp] = useState<string>();
+
+  useEffect(() => {
+    setTimestamp(format(entry.timestamp, "yyyy-MM-dd", { locale: enUS }));
+  }, [entry.timestamp]);
+
+  return (
+    <tr
+      className={clsx("border-b dark:border-gray-700", {
+        "bg-white dark:bg-gray-900": idx % 2 === 0,
+        "bg-gray-50 dark:bg-gray-800": idx % 2 === 1,
+      })}
     >
-      {entry.name}
-    </th>
-    <td className="px-6 py-4">{entry.realm}</td>
-    <td className="px-6 py-4">{entry.region.toUpperCase()}</td>
-    <td className="px-6 py-4">{entry.heal}</td>
-    <td className="px-6 py-4">{entry.overheal}</td>
-    <td className="px-6 py-4">{entry.totalHeal}</td>
-    <td className="px-6 py-4">PLACEHOLDER</td>
-    <td className="px-6 py-4">
-      <a
-        href={`https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events`}
-        target="_blank"
-        rel="noreferrer noopener"
+      <th
+        scope="row"
+        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
       >
-        WCL
-      </a>
-    </td>
-  </tr>
-);
+        {entry.name}
+      </th>
+      <td className="px-6 py-4">{entry.realm}</td>
+      <td className="px-6 py-4">{entry.region.toUpperCase()}</td>
+      <td className="px-6 py-4">{entry.heal}</td>
+      <td className="px-6 py-4">{entry.overheal}</td>
+      <td className="px-6 py-4">{entry.totalHeal}</td>
+      <td className="px-6 py-4">{timestamp}</td>
+      <td className="px-6 py-4">
+        <a
+          href={`https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events`}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          WCL
+        </a>
+      </td>
+    </tr>
+  );
+};
 
 interface LeaderboardProps {
   region: Regions;
