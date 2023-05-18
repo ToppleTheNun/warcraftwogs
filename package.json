@@ -41,6 +41,7 @@
     "graphql": "16.6.0",
     "graphql-request": "5.1.0",
     "graphql-tag": "2.12.6",
+    "intl-parse-accept-language": "1.0.0",
     "isbot": "3.6.10",
     "lodash": "4.17.21",
     "lucide-react": "0.218.0",
@@ -48,6 +49,7 @@
     "react-aria": "3.24.0",
     "react-dom": "18.2.0",
     "react-stately": "3.22.0",
+    "remix-utils": "6.3.0",
     "zod": "3.21.4"
   },
   "devDependencies": {
