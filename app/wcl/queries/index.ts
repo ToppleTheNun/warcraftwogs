@@ -1,5 +1,7 @@
 import { getCachedSdk } from "~/wcl/client";
 import type {
+  GetCombatantInfosQuery,
+  GetCombatantInfosQueryVariables,
   GetFightsQuery,
   GetFightsQueryVariables,
   GetPlayerDetailsQuery,
@@ -30,4 +32,12 @@ export const getPlayerDetails = async (
   const sdk = await getCachedSdk();
 
   return sdk.getPlayerDetails(params);
+};
+
+export const getCombatantInfos = async (
+  params: GetCombatantInfosQueryVariables
+): Promise<GetCombatantInfosQuery> => {
+  const sdk = await getCachedSdk();
+
+  return sdk.getCombatantInfos(params);
 };
