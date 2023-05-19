@@ -31,13 +31,31 @@ query getWordOfGloryHealingEvents($reportID: String!, $fightIDs: [Int]!) {
         slug
       }
 
-      # Exclude WoGs on targets with Guardian Spirit.
+      # Exclude WoGs on targets with Guardian Spirit and Vampiric Blood.
       events(
         abilityID: 85673
         dataType: Healing
         fightIDs: $fightIDs
-        targetAurasAbsent: "255312."
+        targetAurasAbsent: "255312.55233."
       ) {
+        data
+      }
+    }
+  }
+}
+
+query getCombatantInfos($reportID: String!, $fightIDs: [Int]!) {
+  reportData {
+    report(code: $reportID) {
+      title
+      startTime
+      endTime
+
+      region {
+        slug
+      }
+
+      events(dataType: CombatantInfo, fightIDs: $fightIDs) {
         data
       }
     }

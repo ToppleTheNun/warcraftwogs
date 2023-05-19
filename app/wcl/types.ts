@@ -2028,6 +2028,29 @@ export type GetWordOfGloryHealingEventsQuery = {
   } | null;
 };
 
+export type GetCombatantInfosQueryVariables = Exact<{
+  reportID: Scalars["String"];
+  fightIDs: Array<InputMaybe<Scalars["Int"]>> | InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetCombatantInfosQuery = {
+  __typename?: "Query";
+  reportData?: {
+    __typename?: "ReportData";
+    report?: {
+      __typename?: "Report";
+      title: string;
+      startTime: number;
+      endTime: number;
+      region?: { __typename?: "Region"; slug: string } | null;
+      events?: {
+        __typename?: "ReportEventPaginator";
+        data?: any | null;
+      } | null;
+    } | null;
+  } | null;
+};
+
 export type GetPlayerDetailsQueryVariables = Exact<{
   reportID: Scalars["String"];
   fightIDs: Array<InputMaybe<Scalars["Int"]>> | InputMaybe<Scalars["Int"]>;
@@ -2078,7 +2101,29 @@ export const GetWordOfGloryHealingEventsDocument = gql`
         region {
           slug
         }
-        events(abilityID: 85673, dataType: Healing, fightIDs: $fightIDs) {
+        events(
+          abilityID: 85673
+          dataType: Healing
+          fightIDs: $fightIDs
+          targetAurasAbsent: "255312.55233."
+        ) {
+          data
+        }
+      }
+    }
+  }
+`;
+export const GetCombatantInfosDocument = gql`
+  query getCombatantInfos($reportID: String!, $fightIDs: [Int]!) {
+    reportData {
+      report(code: $reportID) {
+        title
+        startTime
+        endTime
+        region {
+          slug
+        }
+        events(dataType: CombatantInfo, fightIDs: $fightIDs) {
           data
         }
       }
@@ -2144,6 +2189,21 @@ export function getSdk(
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "getWordOfGloryHealingEvents",
+        "query"
+      );
+    },
+    getCombatantInfos(
+      variables: GetCombatantInfosQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetCombatantInfosQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetCombatantInfosQuery>(
+            GetCombatantInfosDocument,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "getCombatantInfos",
         "query"
       );
     },
