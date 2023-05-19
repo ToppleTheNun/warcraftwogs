@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import { Spinner } from "~/routes/$season/Spinner";
-import { basisLinkClassName } from "~/routes/$season/tokens";
+import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 
 interface LeaderboardRowProps {
@@ -77,13 +77,24 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
               WoGs cast on targets with{" "}
               <a
                 suppressHydrationWarning
-                className={basisLinkClassName}
+                className={basicLinkClassName}
                 data-wowhead="spell=255312"
                 href="https://www.wowhead.com/spell=255312/guardian-spirit"
                 target="_blank"
                 rel="noreferrer noopener"
               >
                 Guardian Spirit
+              </a>{" "}
+              and{" "}
+              <a
+                suppressHydrationWarning
+                className={basicLinkClassName}
+                data-wowhead="spell=55233"
+                href="https://www.wowhead.com/spell=55233/vampiric-blood"
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                Vampiric Blood
               </a>{" "}
               active are disqualified from the leaderboard.
             </p>

@@ -16,7 +16,7 @@ import { getEnhancedSeason } from "~/models/season.server";
 import { Footer } from "~/routes/$season/Footer";
 import { Header } from "~/routes/$season/Header";
 import { Leaderboard } from "~/routes/$season/Leaderboard";
-import { basisLinkClassName } from "~/routes/$season/tokens";
+import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { findSeasonByName } from "~/seasons";
 import type { Timings } from "~/timing.server";
@@ -69,6 +69,8 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
 
   return headers;
 };
+
+export { action } from "./LogIngest";
 
 export const loader = async ({
   params,
@@ -139,7 +141,7 @@ export default function Season(): JSX.Element {
         <h1 className="text-lg">
           <a
             suppressHydrationWarning
-            className={basisLinkClassName}
+            className={basicLinkClassName}
             data-wowhead="spell=85673"
             href="https://www.wowhead.com/spell=85673/word-of-glory"
             target="_blank"

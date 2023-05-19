@@ -143,6 +143,7 @@ export const createWordOfGlory = (
               },
             },
           },
+          createdAt: new Date(entry.timestamp),
         },
       });
     },
