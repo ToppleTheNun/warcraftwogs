@@ -3,7 +3,6 @@ query getFights($reportID: String!) {
     report(code: $reportID) {
       title
       startTime
-      endTime
 
       region {
         slug
@@ -15,6 +14,31 @@ query getFights($reportID: String!) {
         endTime
 
         difficulty
+        encounterID
+        friendlyPlayers
+      }
+    }
+  }
+}
+
+query getFightsById($reportID: String!, $fightIDs: [Int]!) {
+  reportData {
+    report(code: $reportID) {
+      title
+      startTime
+
+      region {
+        slug
+      }
+
+      fights(translate: true, fightIDs: $fightIDs) {
+        id
+        startTime
+        endTime
+
+        difficulty
+        encounterID
+        friendlyPlayers
       }
     }
   }

@@ -9,7 +9,7 @@ import { time } from "~/timing.server";
 import { isPresent } from "~/typeGuards";
 import { isRegion, orderedRegionsBySize } from "~/utils";
 import {
-  getInitialReportData,
+  getFights,
   getPlayerDetails,
   getWordOfGloryHealing,
 } from "~/wcl/queries";
@@ -38,8 +38,8 @@ export const loadLeaderboardEntriesForReport = async (
   reportID: string,
   timings: Timings
 ): Promise<WordOfGloryLeaderboardIngestion> => {
-  const rawFightData = await time(() => getInitialReportData({ reportID }), {
-    type: "getInitialReportData",
+  const rawFightData = await time(() => getFights({ reportID }), {
+    type: "getFights",
     timings,
   });
   const fights = rawFightData.reportData?.report?.fights;

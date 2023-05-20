@@ -1992,7 +1992,6 @@ export type GetFightsQuery = {
       __typename?: "Report";
       title: string;
       startTime: number;
-      endTime: number;
       region?: { __typename?: "Region"; slug: string } | null;
       fights?: Array<{
         __typename?: "ReportFight";
@@ -2000,6 +1999,35 @@ export type GetFightsQuery = {
         startTime: number;
         endTime: number;
         difficulty?: number | null;
+        encounterID: number;
+        friendlyPlayers?: Array<number | null> | null;
+      } | null> | null;
+    } | null;
+  } | null;
+};
+
+export type GetFightsByIdQueryVariables = Exact<{
+  reportID: Scalars["String"];
+  fightIDs: Array<InputMaybe<Scalars["Int"]>> | InputMaybe<Scalars["Int"]>;
+}>;
+
+export type GetFightsByIdQuery = {
+  __typename?: "Query";
+  reportData?: {
+    __typename?: "ReportData";
+    report?: {
+      __typename?: "Report";
+      title: string;
+      startTime: number;
+      region?: { __typename?: "Region"; slug: string } | null;
+      fights?: Array<{
+        __typename?: "ReportFight";
+        id: number;
+        startTime: number;
+        endTime: number;
+        difficulty?: number | null;
+        encounterID: number;
+        friendlyPlayers?: Array<number | null> | null;
       } | null> | null;
     } | null;
   } | null;
@@ -2077,7 +2105,6 @@ export const GetFightsDocument = gql`
       report(code: $reportID) {
         title
         startTime
-        endTime
         region {
           slug
         }
@@ -2086,6 +2113,29 @@ export const GetFightsDocument = gql`
           startTime
           endTime
           difficulty
+          encounterID
+          friendlyPlayers
+        }
+      }
+    }
+  }
+`;
+export const GetFightsByIdDocument = gql`
+  query getFightsById($reportID: String!, $fightIDs: [Int]!) {
+    reportData {
+      report(code: $reportID) {
+        title
+        startTime
+        region {
+          slug
+        }
+        fights(translate: true, fightIDs: $fightIDs) {
+          id
+          startTime
+          endTime
+          difficulty
+          encounterID
+          friendlyPlayers
         }
       }
     }
@@ -2174,6 +2224,20 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         "getFights",
+        "query"
+      );
+    },
+    getFightsById(
+      variables: GetFightsByIdQueryVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<GetFightsByIdQuery> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.request<GetFightsByIdQuery>(GetFightsByIdDocument, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders,
+          }),
+        "getFightsById",
         "query"
       );
     },

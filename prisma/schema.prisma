@@ -10,17 +10,21 @@ datasource db {
 model WordOfGlory {
   id String @id
 
-  report    String
-  fight     Int
-  heal      Int
-  overheal  Int
-  totalHeal Int
+  report        String
+  reportFightId Int
+  heal          Int
+  overheal      Int
+  totalHeal     Int
+  timestamp     DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   character   Character @relation(fields: [characterId], references: [id])
   characterId Int
+
+  fight   Fight  @relation(fields: [fightId], references: [id])
+  fightId String
 }
 
 model Character {
@@ -34,6 +38,26 @@ model Character {
   updatedAt DateTime @updatedAt
 
   wordOfGlorys WordOfGlory[]
+}
+
+model Fight {
+  id String @id @default(cuid())
+
+  firstSeenReport String
+  startTime       DateTime
+  endTime         DateTime
+  difficulty      Int
+  encounterId     Int
+  // colon separated list of ints
+  friendlyPlayers String
+  region          Regions
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  wordOfGlorys WordOfGlory[]
+
+  @@unique([startTime, endTime, encounterId, friendlyPlayers, region])
 }
 
 enum Regions {
