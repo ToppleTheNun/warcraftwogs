@@ -50,6 +50,7 @@ const getReportWordOfGlorys = async (
 
   return wordOfGloryHealingEventsResult.data.map((it) => ({
     ...it,
+    relativeTimestamp: it.timestamp,
     report: reportID,
   }));
 };
@@ -181,6 +182,7 @@ const ingestWordOfGlory = async (
           data: {
             report: ingestibleWordOfGlory.report,
             reportFightId: ingestibleWordOfGlory.fight,
+            reportFightRelativeTimestamp: ingestibleWordOfGlory.relativeTimestamp,
             heal: ingestibleWordOfGlory.amount,
             overheal: ingestibleWordOfGlory.overheal,
             totalHeal: ingestibleWordOfGlory.totalHeal,

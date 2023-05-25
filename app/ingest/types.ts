@@ -30,6 +30,7 @@ export type RequiredHealing = {
 
 export type ReportWordOfGlory = WordOfGloryHealEvent & {
   report: string;
+  relativeTimestamp: number;
 };
 
 export type IngestibleReportWordOfGlory = ReportWordOfGlory & {

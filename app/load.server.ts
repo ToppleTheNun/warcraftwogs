@@ -19,6 +19,7 @@ export type WordOfGloryLeaderboardEntry = {
   totalHeal: number;
   report: string;
   fight: number;
+  relativeTimestamp: number;
   timestamp: number;
   character: number;
 };
@@ -73,6 +74,7 @@ export const loadDataForRegion = async (
     report: entry.report,
     fight: entry.reportFightId,
     timestamp: entry.timestamp.getTime(),
+    relativeTimestamp: entry.reportFightRelativeTimestamp,
     character: entry.source.id,
   }));
 };

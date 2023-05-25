@@ -7,14 +7,28 @@ import enUS from "date-fns/locale/en-US";
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
+import { isPresent } from "~/typeGuards";
+
+const buildWclUrl = (entry: WordOfGloryLeaderboardEntry) => {
+  const base = `https://www.warcraftlogs.com/reports/${entry.report}`;
+  const parts = [
+    `fight=${entry.fight}`,
+    "type=healing",
+    "ability=85673",
+    "view=events",
+    entry.relativeTimestamp ? `start=${entry.relativeTimestamp - 500}` : null,
+    entry.relativeTimestamp ? `end=${entry.relativeTimestamp + 500}` : null,
+  ]
+    .filter(isPresent)
+    .join("&");
+  return `${base}#${parts}`;
+};
 
 interface LeaderboardRowProps {
   entry: WordOfGloryLeaderboardEntry;
   idx: number;
 }
 const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
-  const wclUrl = `https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events}`;
-
   return (
     <tr
       className={clsx("border-b border-gray-700", {
@@ -42,7 +56,7 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
         </time>
       </td>
       <td className="px-6 py-4">
-        <a href={wclUrl} target="_blank" rel="noreferrer noopener">
+        <a href={buildWclUrl(entry)} target="_blank" rel="noreferrer noopener">
           WCL
         </a>
       </td>

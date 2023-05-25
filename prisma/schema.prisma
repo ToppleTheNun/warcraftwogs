@@ -10,13 +10,14 @@ datasource db {
 model WordOfGlory {
   id String @id @default(cuid())
 
-  report        String
-  reportFightId Int
-  heal          Int
-  overheal      Int
-  totalHeal     Int
-  timestamp     DateTime
-  targetId      Int
+  report                       String
+  reportFightId                Int
+  reportFightRelativeTimestamp Int      @default(-1)
+  heal                         Int
+  overheal                     Int
+  totalHeal                    Int
+  timestamp                    DateTime
+  targetId                     Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
