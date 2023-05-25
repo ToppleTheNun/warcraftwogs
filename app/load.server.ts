@@ -11,6 +11,7 @@ import { orderedRegionsBySize } from "~/utils";
 export const searchParamSeparator = "~";
 
 export type WordOfGloryLeaderboardEntry = {
+  id: string;
   name: string;
   realm: string;
   region: string;
@@ -65,6 +66,7 @@ export const loadDataForRegion = async (
   );
 
   return leaderboardEntries.map<WordOfGloryLeaderboardEntry>((entry) => ({
+    id: entry.id,
     name: entry.source.name,
     realm: entry.source.server,
     region: entry.source.region,

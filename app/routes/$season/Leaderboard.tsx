@@ -16,8 +16,12 @@ const buildWclUrl = (entry: WordOfGloryLeaderboardEntry) => {
     "type=healing",
     "ability=85673",
     "view=events",
-    entry.relativeTimestamp ? `start=${entry.relativeTimestamp - 500}` : null,
-    entry.relativeTimestamp ? `end=${entry.relativeTimestamp + 500}` : null,
+    entry.relativeTimestamp >= 0
+      ? `start=${entry.relativeTimestamp - 500}`
+      : null,
+    entry.relativeTimestamp >= 0
+      ? `end=${entry.relativeTimestamp + 500}`
+      : null,
   ]
     .filter(isPresent)
     .join("&");
@@ -140,11 +144,7 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
           </thead>
           <tbody>
             {season.dataByRegion[region].map((entry, idx) => (
-              <LeaderboardRow
-                entry={entry}
-                idx={idx}
-                key={`${entry.name}-${entry.timestamp}`}
-              />
+              <LeaderboardRow entry={entry} idx={idx} key={entry.id} />
             ))}
           </tbody>
         </table>
