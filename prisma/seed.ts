@@ -1,19 +1,14 @@
 import { prisma } from "~/db";
-import { loadLeaderboardEntriesForReport } from "~/load.server";
-import { createWordOfGlory } from "~/models/wordOfGlory.server";
+import { ingestFightsFromReport } from "~/ingest/fights.server";
+import { ingestWordOfGloryHealsFromReportForFights } from "~/ingest/wogHealingEvents.server";
 
 const seed = async () => {
-  const { entries } = await loadLeaderboardEntriesForReport(
-    "qw9QL7RPAKNC3jx2",
-    {}
-  );
-
-  const seededEntries = await entries.reduce(async (accP, entry) => {
-    const acc = await accP;
-    await createWordOfGlory(entry, {});
-    return acc + 1;
-  }, Promise.resolve(0));
-  console.log(`Created ${seededEntries} leaderboard entries.`);
+  const reportID = "AWTqRm8xNJzPDBya";
+  const reportWithFights = await ingestFightsFromReport(reportID, {});
+  if (!reportWithFights) {
+    throw new Error("No fights created!");
+  }
+  await ingestWordOfGloryHealsFromReportForFights(reportWithFights, {});
 };
 
 seed()

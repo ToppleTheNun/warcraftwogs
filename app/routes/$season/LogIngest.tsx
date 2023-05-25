@@ -7,13 +7,7 @@ import type { NavigationStates } from "@remix-run/router";
 import clsx from "clsx";
 import { z } from "zod";
 
-import { loadLeaderboardEntriesForReport } from "~/load.server";
-import {
-  createWordOfGlory,
-  getMinimumAmountOfHealing,
-  getMinimumAmountOfOverhealing,
-  getMinimumAmountOfTotalHealing,
-} from "~/models/wordOfGlory.server";
+import { ingestWarcraftLogsReport } from "~/ingest/log.server";
 import { Spinner } from "~/routes/$season/Spinner";
 import { linkClassName } from "~/routes/$season/tokens";
 import type { Timings } from "~/timing.server";
@@ -57,53 +51,7 @@ export const action = async ({ request }: DataFunctionArgs) => {
     return json({ status: "error", submission } as const, { status: 400 });
   }
 
-  // const { region, entries } = await loadLeaderboardEntriesForReport(
-  //   warcraftLogsCode,
-  //   timings
-  // );
-  // if (!region) {
-  //   console.error("!region");
-  //   return json({ status: "error", submission } as const, { status: 400 });
-  // }
-  //
-  // const amountOfParsesToCheckAgainst = 50;
-  // const regionHealMinimumResult = await getMinimumAmountOfHealing(
-  //   amountOfParsesToCheckAgainst,
-  //   region,
-  //   timings
-  // );
-  // const regionHealMinimum = regionHealMinimumResult._min.heal ?? 0;
-  // const regionOverhealMinimumResult = await getMinimumAmountOfOverhealing(
-  //   amountOfParsesToCheckAgainst,
-  //   region,
-  //   timings
-  // );
-  // const regionOverhealMinimum = regionOverhealMinimumResult._min.overheal ?? 0;
-  // const regionTotalHealMinimumResult = await getMinimumAmountOfTotalHealing(
-  //   amountOfParsesToCheckAgainst,
-  //   region,
-  //   timings
-  // );
-  // const regionTotalHealMinimum =
-  //   regionTotalHealMinimumResult._min.totalHeal ?? 0;
-  //
-  // console.log(
-  //   `Required healing to be recorded: ${regionHealMinimum}/${regionOverhealMinimum}/${regionTotalHealMinimum}`
-  // );
-  // const entriesThatPassTheBar = entries.filter(
-  //   (entry) =>
-  //     entry.heal >= regionHealMinimum ||
-  //     entry.overheal >= regionOverhealMinimum ||
-  //     entry.totalHeal >= regionTotalHealMinimum
-  // );
-  //
-  // await Promise.all(
-  //   entriesThatPassTheBar.map((entry) => createWordOfGlory(entry, timings))
-  // );
-  //
-  // console.log(
-  //   `Ingested ${entriesThatPassTheBar.length}/${entries.length} WoG events`
-  // );
+  await ingestWarcraftLogsReport(warcraftLogsCode, timings);
 
   return json(
     { status: "success", submission },

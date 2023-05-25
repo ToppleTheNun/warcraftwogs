@@ -1,18 +1,15 @@
 import type { Regions } from "@prisma/client";
-import setMilliseconds from "date-fns/setMilliseconds";
 
 import { prisma } from "~/db";
-import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import type { Timings } from "~/timing.server";
 import { time } from "~/timing.server";
-import { isRegion } from "~/utils";
 
-export const getMinimumAmountOfHealing = (
+export const getMinimumAmountOfHealing = async (
   parsesToCheck: number,
   region: Regions,
   timings: Timings
-) =>
-  time(
+) => {
+  const result = await time(
     () =>
       prisma.wordOfGlory.aggregate({
         _min: {
@@ -23,7 +20,7 @@ export const getMinimumAmountOfHealing = (
           heal: "desc",
         },
         where: {
-          character: {
+          fight: {
             is: {
               region,
             },
@@ -32,13 +29,15 @@ export const getMinimumAmountOfHealing = (
       }),
     { type: "getMinimumAmountOfHealing", timings }
   );
+  return result._min.heal ?? 0;
+};
 
-export const getMinimumAmountOfOverhealing = (
+export const getMinimumAmountOfOverhealing = async (
   parsesToCheck: number,
   region: Regions,
   timings: Timings
-) =>
-  time(
+) => {
+  const result = await time(
     () =>
       prisma.wordOfGlory.aggregate({
         _min: {
@@ -49,7 +48,7 @@ export const getMinimumAmountOfOverhealing = (
           overheal: "desc",
         },
         where: {
-          character: {
+          fight: {
             is: {
               region,
             },
@@ -58,13 +57,15 @@ export const getMinimumAmountOfOverhealing = (
       }),
     { type: "getMinimumAmountOfOverhealing", timings }
   );
+  return result._min.overheal ?? 0;
+};
 
-export const getMinimumAmountOfTotalHealing = (
+export const getMinimumAmountOfTotalHealing = async (
   parsesToCheck: number,
   region: Regions,
   timings: Timings
-) =>
-  time(
+) => {
+  const result = await time(
     () =>
       prisma.wordOfGlory.aggregate({
         _min: {
@@ -75,7 +76,7 @@ export const getMinimumAmountOfTotalHealing = (
           totalHeal: "desc",
         },
         where: {
-          character: {
+          fight: {
             is: {
               region,
             },
@@ -84,68 +85,5 @@ export const getMinimumAmountOfTotalHealing = (
       }),
     { type: "getMinimumAmountOfTotalHealing", timings }
   );
-
-export const createWordOfGlory = (
-  entry: WordOfGloryLeaderboardEntry,
-  timings: Timings
-) =>
-  time(
-    () => {
-      const roundedTimestamp = setMilliseconds(entry.timestamp, 0).getTime();
-      const derivedId = [
-        entry.report,
-        entry.region,
-        entry.realm,
-        entry.name,
-        roundedTimestamp,
-      ].join(":");
-      return prisma.wordOfGlory.upsert({
-        where: {
-          id: derivedId,
-        },
-        update: {
-          report: entry.report,
-          fight: entry.fight,
-          heal: entry.heal,
-          overheal: entry.overheal,
-          totalHeal: entry.totalHeal,
-          character: {
-            connectOrCreate: {
-              where: {
-                id: entry.character,
-              },
-              create: {
-                id: entry.character,
-                name: entry.name,
-                server: entry.realm,
-                region: isRegion(entry.region) ? entry.region : "us",
-              },
-            },
-          },
-        },
-        create: {
-          id: derivedId,
-          report: entry.report,
-          fight: entry.fight,
-          heal: entry.heal,
-          overheal: entry.overheal,
-          totalHeal: entry.totalHeal,
-          character: {
-            connectOrCreate: {
-              where: {
-                id: entry.character,
-              },
-              create: {
-                id: entry.character,
-                name: entry.name,
-                server: entry.realm,
-                region: isRegion(entry.region) ? entry.region : "us",
-              },
-            },
-          },
-          createdAt: new Date(entry.timestamp),
-        },
-      });
-    },
-    { type: "createWordOfGlory", timings }
-  );
+  return result._min.totalHeal ?? 0;
+};

@@ -9,7 +9,7 @@ if (typeof window !== "undefined") {
 export const prisma =
   globalForPrisma.prisma ||
   new PrismaClient({
-    log: ["query"],
+    log: ["query", "info", "warn", "error"],
   });
 
 if (process.env.NODE_ENV !== "production") {

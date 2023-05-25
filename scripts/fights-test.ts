@@ -92,14 +92,22 @@ const isSameFight = (fightA: ReportFight, fightB: ReportFight) => {
 
 (async () => {
   const numberOfFightsBeforeIngestReportA = await prisma.fight.count();
-  console.log(`Number of fights before ingesting report A: ${numberOfFightsBeforeIngestReportA}`);
-  await ingestFightsFromReport("xmXLtb6M2c4jBYqZ", 18, {});
+  console.log(
+    `Number of fights before ingesting report A: ${numberOfFightsBeforeIngestReportA}`
+  );
+  await ingestFightsFromReport("xmXLtb6M2c4jBYqZ", {});
   const numberOfFightsAfterIngestReportA = await prisma.fight.count();
-  console.log(`Number of fights after ingesting report A: ${numberOfFightsAfterIngestReportA}`);
+  console.log(
+    `Number of fights after ingesting report A: ${numberOfFightsAfterIngestReportA}`
+  );
 
   const numberOfFightsBeforeIngestReportB = await prisma.fight.count();
-  console.log(`Number of fights before ingesting report B: ${numberOfFightsBeforeIngestReportB}`);
-  await ingestFightsFromReport("AWTqRm8xNJzPDBya", 1, {});
+  console.log(
+    `Number of fights before ingesting report B: ${numberOfFightsBeforeIngestReportB}`
+  );
+  await ingestFightsFromReport("AWTqRm8xNJzPDBya", {});
   const numberOfFightsAfterIngestReportB = await prisma.fight.count();
-  console.log(`Number of fights after ingesting report B: ${numberOfFightsAfterIngestReportB}`);
+  console.log(
+    `Number of fights after ingesting report B: ${numberOfFightsAfterIngestReportB}`
+  );
 })();

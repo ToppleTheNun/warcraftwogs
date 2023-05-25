@@ -8,7 +8,7 @@ datasource db {
 }
 
 model WordOfGlory {
-  id String @id
+  id String @id @default(cuid())
 
   report        String
   reportFightId Int
@@ -16,12 +16,13 @@ model WordOfGlory {
   overheal      Int
   totalHeal     Int
   timestamp     DateTime
+  targetId      Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  character   Character @relation(fields: [characterId], references: [id])
-  characterId Int
+  source   Character @relation(fields: [sourceId], references: [id])
+  sourceId Int
 
   fight   Fight  @relation(fields: [fightId], references: [id])
   fightId String

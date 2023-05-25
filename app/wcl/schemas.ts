@@ -24,7 +24,9 @@ export const playerDetailsDpsHealerTankSchema = z.object({
   healers: playerDetailsArraySchema.default([]),
   tanks: playerDetailsArraySchema.default([]),
 });
-export type PlayerDetailsDpsHealerTank = z.infer<typeof playerDetailsDpsHealerTankSchema>;
+export type PlayerDetailsDpsHealerTank = z.infer<
+  typeof playerDetailsDpsHealerTankSchema
+>;
 
 export const wordOfGloryHealEventSchema = z.object({
   timestamp: z.number(),
@@ -36,7 +38,7 @@ export const wordOfGloryHealEventSchema = z.object({
   buffs: z.string(),
   hitType: z.number(),
   amount: z.number(),
-  overheal: z.number(),
+  overheal: z.number().default(0),
 });
 export type WordOfGloryHealEvent = z.infer<typeof wordOfGloryHealEventSchema>;
 

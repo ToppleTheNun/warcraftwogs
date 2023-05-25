@@ -14,3 +14,18 @@ export const getReportCode = (input: string): string | undefined => {
 export const isRegion = (x: string): x is Regions => {
   return orderedRegionsBySize.includes(x as Regions);
 };
+
+type IsWithinToleranceParams = {
+  original: number;
+  toCheck: number;
+  tolerance: number;
+};
+export const isWithinTolerance = ({
+  original,
+  toCheck,
+  tolerance,
+}: IsWithinToleranceParams): boolean => {
+  const min = toCheck - tolerance;
+  const max = toCheck + tolerance;
+  return min <= original && original <= max;
+};

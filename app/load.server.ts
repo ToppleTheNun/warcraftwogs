@@ -160,13 +160,14 @@ export const loadDataForRegion = async (
     () =>
       prisma.wordOfGlory.findMany({
         where: {
-          character: {
+          fight: {
             region,
           },
           createdAt: dateTimeFilter,
         },
         include: {
-          character: true,
+          source: true,
+          fight: true,
         },
         orderBy: {
           totalHeal: "desc",
@@ -177,16 +178,16 @@ export const loadDataForRegion = async (
   );
 
   return leaderboardEntries.map<WordOfGloryLeaderboardEntry>((entry) => ({
-    name: entry.character.name,
-    realm: entry.character.server,
-    region: entry.character.region,
+    name: entry.source.name,
+    realm: entry.source.server,
+    region: entry.source.region,
     heal: entry.heal,
     overheal: entry.overheal,
     totalHeal: entry.totalHeal,
     report: entry.report,
-    fight: entry.fight,
+    fight: entry.reportFightId,
     timestamp: entry.createdAt.getTime(),
-    character: entry.character.id,
+    character: entry.source.id,
   }));
 };
 
