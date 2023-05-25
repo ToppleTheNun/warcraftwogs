@@ -23,14 +23,14 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
 
   return (
     <tr
-      className={clsx("border-b dark:border-gray-700", {
-        "bg-white dark:bg-gray-900": idx % 2 === 0,
-        "bg-gray-50 dark:bg-gray-800": idx % 2 === 1,
+      className={clsx("border-b border-gray-700", {
+        "bg-gray-900": idx % 2 === 0,
+        "bg-gray-800": idx % 2 === 1,
       })}
     >
       <th
         scope="row"
-        className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
+        className="whitespace-nowrap px-6 py-4 font-medium text-white"
       >
         {entry.name}
       </th>
@@ -70,10 +70,10 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
       id={region}
     >
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-          <caption className="bg-white p-5 text-left text-lg font-semibold text-gray-900 dark:bg-gray-800 dark:text-white">
+        <table className="w-full text-left text-sm text-gray-400">
+          <caption className="bg-gray-800 p-5 text-left text-lg font-semibold text-white">
             {region.toUpperCase()}
-            <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
+            <p className="mt-1 text-sm font-normal text-gray-400">
               WoGs cast on targets with{" "}
               <a
                 suppressHydrationWarning
@@ -99,7 +99,7 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
               active are disqualified from the leaderboard.
             </p>
           </caption>
-          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="bg-gray-700 text-xs uppercase text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Character Name
