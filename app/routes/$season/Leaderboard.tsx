@@ -3,10 +3,8 @@ import { useNavigation } from "@remix-run/react";
 import clsx from "clsx";
 import format from "date-fns/format";
 import enUS from "date-fns/locale/en-US";
-import { useEffect, useState } from "react";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
-import { Spinner } from "~/routes/$season/Spinner";
 import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 
@@ -15,11 +13,7 @@ interface LeaderboardRowProps {
   idx: number;
 }
 const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
-  const [timestamp, setTimestamp] = useState<string>();
-
-  useEffect(() => {
-    setTimestamp(format(entry.timestamp, "yyyy-MM-dd", { locale: enUS }));
-  }, [entry.timestamp]);
+  const wclUrl = `https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events}`;
 
   return (
     <tr
@@ -39,13 +33,16 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
       <td className="px-6 py-4">{entry.heal}</td>
       <td className="px-6 py-4">{entry.overheal}</td>
       <td className="px-6 py-4">{entry.totalHeal}</td>
-      <td className="px-6 py-4">{timestamp ? timestamp : <Spinner />}</td>
       <td className="px-6 py-4">
-        <a
-          href={`https://www.warcraftlogs.com/reports/${entry.report}#fight=${entry.fight}&type=healing&ability=85673&view=events`}
-          target="_blank"
-          rel="noreferrer noopener"
+        <time
+          dateTime={format(entry.timestamp, "yyyy-MM-dd", { locale: enUS })}
+          suppressHydrationWarning
         >
+          {format(entry.timestamp, "yyyy-MM-dd", { locale: enUS })}
+        </time>
+      </td>
+      <td className="px-6 py-4">
+        <a href={wclUrl} target="_blank" rel="noreferrer noopener">
           WCL
         </a>
       </td>
