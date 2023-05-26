@@ -15,6 +15,8 @@ export const serverSchema = z.object({
   UPSTASH_REDIS_REST_TOKEN: z.string(),
   WARCRAFT_LOGS_CLIENT_ID: z.string(),
   WARCRAFT_LOGS_CLIENT_SECRET: z.string(),
+  BATTLE_NET_CLIENT_ID: z.string().optional(),
+  BATTLE_NET_CLIENT_SECRET: z.string().optional(),
 });
 
 export const mergedSchema = serverSchema.merge(clientSchema);

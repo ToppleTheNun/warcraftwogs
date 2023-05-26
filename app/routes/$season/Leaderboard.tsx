@@ -5,6 +5,8 @@ import format from "date-fns/format";
 import enUS from "date-fns/locale/en-US";
 
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
+import { realms } from "~/realms";
+import { ExternalLink } from "~/routes/$season/ExternalLink";
 import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { isPresent } from "~/typeGuards";
@@ -33,6 +35,15 @@ interface LeaderboardRowProps {
   idx: number;
 }
 const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
+  const realm = realms[entry.region].find(
+    (realm) => realm.name.replace(" ", "") === entry.realm
+  );
+  const playerUrl = realm
+    ? `https://warcraflogs.com/character/${entry.region}/${
+        realm.slug
+      }/${entry.name.toLowerCase()}`
+    : null;
+
   return (
     <tr
       className={clsx("border-b border-gray-700", {
@@ -44,10 +55,16 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
         scope="row"
         className="whitespace-nowrap px-6 py-4 font-medium text-white"
       >
-        {entry.name}
+        {playerUrl ? (
+          <ExternalLink href={playerUrl}>
+            {entry.name} - {realm?.name ?? entry.realm}
+          </ExternalLink>
+        ) : (
+          <>
+            {entry.name} - {realm?.name ?? entry.realm}
+          </>
+        )}
       </th>
-      <td className="px-6 py-4">{entry.realm}</td>
-      <td className="px-6 py-4">{entry.region.toUpperCase()}</td>
       <td className="px-6 py-4">{entry.heal}</td>
       <td className="px-6 py-4">{entry.overheal}</td>
       <td className="px-6 py-4">{entry.totalHeal}</td>
@@ -60,9 +77,7 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
         </time>
       </td>
       <td className="px-6 py-4">
-        <a href={buildWclUrl(entry)} target="_blank" rel="noreferrer noopener">
-          WCL
-        </a>
+        <ExternalLink href={buildWclUrl(entry)}>WCL</ExternalLink>
       </td>
     </tr>
   );
@@ -85,7 +100,7 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
       id={region}
     >
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-left text-sm text-gray-400">
+        <table className="w-full table-fixed text-left text-sm text-gray-400">
           <caption className="bg-gray-800 p-5 text-left text-lg font-semibold text-white">
             {region.toUpperCase()}
             <p className="mt-1 text-sm font-normal text-gray-400">
@@ -117,13 +132,7 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
           <thead className="bg-gray-700 text-xs uppercase text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Character Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Realm
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Region
+                Character
               </th>
               <th scope="col" className="px-6 py-3">
                 Healed

@@ -14,7 +14,7 @@ export type WordOfGloryLeaderboardEntry = {
   id: string;
   name: string;
   realm: string;
-  region: string;
+  region: Regions;
   heal: number;
   overheal: number;
   totalHeal: number;
