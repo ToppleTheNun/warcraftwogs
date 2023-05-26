@@ -19,12 +19,12 @@ export const Header = ({ season }: { season: EnhancedSeason }): JSX.Element => {
         </nav>
       </header>
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between">
-        <div className="flex w-full flex-col flex-wrap justify-between gap-3 pt-4 md:flex-row md:px-4">
+        <div className="flex w-full flex-col flex-wrap justify-between gap-3 pt-4 md:flex-row md:px-4 2xl:px-0">
           <RegionToggle season={season} />
         </div>
       </div>
       <div className="mx-auto flex w-full max-w-screen-2xl items-center justify-between">
-        <div className="flex w-full flex-col flex-wrap justify-between gap-3 py-4 md:px-4">
+        <div className="flex w-full flex-col flex-wrap justify-between gap-3 py-4 md:px-4 2xl:px-0">
           <LogIngest />
         </div>
       </div>
