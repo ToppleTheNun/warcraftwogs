@@ -1,6 +1,10 @@
 import type { Prisma } from "@prisma/client";
 import { Regions } from "@prisma/client";
 
+import {
+  loadLeaderboardEntriesForSeason,
+  persistLeaderboardEntriesForSeason,
+} from "~/cache";
 import { regions } from "~/cookies";
 import { prisma } from "~/db";
 import type { Season } from "~/seasons";
@@ -44,6 +48,16 @@ export const loadDataForRegion = async (
     dateTimeFilter.lte = new Date(seasonEnd);
   }
 
+  const key = [season.slug, region].join(searchParamSeparator);
+  const cached = await time(() => loadLeaderboardEntriesForSeason(key), {
+    type: `loadFromRedis-${region}`,
+    timings,
+  });
+
+  if (cached) {
+    return cached;
+  }
+
   const leaderboardEntries = await time(
     () =>
       prisma.wordOfGlory.findMany({
@@ -51,7 +65,7 @@ export const loadDataForRegion = async (
           fight: {
             region,
           },
-          createdAt: dateTimeFilter,
+          timestamp: dateTimeFilter,
         },
         include: {
           source: true,
@@ -65,20 +79,29 @@ export const loadDataForRegion = async (
     { type: "prisma.wordOfGlory.findMany", timings }
   );
 
-  return leaderboardEntries.map<WordOfGloryLeaderboardEntry>((entry) => ({
-    id: entry.id,
-    name: entry.source.name,
-    realm: entry.source.server,
-    region: entry.source.region,
-    heal: entry.heal,
-    overheal: entry.overheal,
-    totalHeal: entry.totalHeal,
-    report: entry.report,
-    fight: entry.reportFightId,
-    timestamp: entry.timestamp.getTime(),
-    relativeTimestamp: entry.reportFightRelativeTimestamp,
-    character: entry.source.id,
-  }));
+  const entries = leaderboardEntries.map<WordOfGloryLeaderboardEntry>(
+    (entry) => ({
+      id: entry.id,
+      name: entry.source.name,
+      realm: entry.source.server,
+      region: entry.source.region,
+      heal: entry.heal,
+      overheal: entry.overheal,
+      totalHeal: entry.totalHeal,
+      report: entry.report,
+      fight: entry.reportFightId,
+      timestamp: entry.timestamp.getTime(),
+      relativeTimestamp: entry.reportFightRelativeTimestamp,
+      character: entry.source.id,
+    })
+  );
+
+  await time(() => persistLeaderboardEntriesForSeason(key, entries), {
+    type: `persist-${region}`,
+    timings,
+  });
+
+  return entries;
 };
 
 export const determineRegionsToDisplayFromSearchParams = (
