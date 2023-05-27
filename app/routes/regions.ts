@@ -1,8 +1,8 @@
 import { type Regions } from "@prisma/client";
-import { type ActionFunction } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { type ActionFunction, redirect } from "@remix-run/node";
 
-import { searchParamSeparator, setRegionsCookie } from "~/load.server";
+import { searchParamSeparator } from "~/constants";
+import { setRegionsCookie } from "~/load.server";
 import { orderedRegionsBySize } from "~/utils";
 
 const addRegionsToReferrerOrBaseUrl = async (

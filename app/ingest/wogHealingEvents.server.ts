@@ -2,6 +2,8 @@ import type { Regions } from "@prisma/client";
 import { produce } from "immer";
 import groupBy from "lodash/groupBy";
 
+import { clearLeaderboardEntriesCache } from "~/cache";
+import { searchParamSeparator } from "~/constants";
 import { prisma } from "~/db";
 import { findOrCreateCharacter } from "~/ingest/character.server";
 import {
@@ -22,6 +24,7 @@ import {
   getMinimumAmountOfOverhealing,
   getMinimumAmountOfTotalHealing,
 } from "~/models/wordOfGlory.server";
+import { findSeasonByTimestamp } from "~/seasons";
 import type { Timings } from "~/timing.server";
 import { time } from "~/timing.server";
 import { isPresent } from "~/typeGuards";
@@ -303,6 +306,15 @@ export const ingestWordOfGloryHealsFromReportForFights = async (
   const filteredIngestedWordOfGlorys = ingestedWordOfGlorys
     .flat()
     .filter(isPresent);
+
+  const wordOfGlory = filteredIngestedWordOfGlorys.at(0);
+  if (wordOfGlory) {
+    const season = findSeasonByTimestamp(wordOfGlory.timestamp);
+    if (season) {
+      const key = [season.slug, report.region].join(searchParamSeparator);
+      await clearLeaderboardEntriesCache(key);
+    }
+  }
 
   return { ...report, ingestedWordOfGlorys: filteredIngestedWordOfGlorys };
 };

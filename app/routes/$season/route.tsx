@@ -7,10 +7,10 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+import { searchParamSeparator } from "~/constants";
 import {
   determineRegionsToDisplayFromCookies,
   determineRegionsToDisplayFromSearchParams,
-  searchParamSeparator,
 } from "~/load.server";
 import { getEnhancedSeason } from "~/models/season.server";
 import { Footer } from "~/routes/$season/Footer";

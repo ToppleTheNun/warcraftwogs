@@ -2,17 +2,16 @@ import type { Prisma } from "@prisma/client";
 import { Regions } from "@prisma/client";
 
 import {
-  loadLeaderboardEntriesForSeason,
-  persistLeaderboardEntriesForSeason,
+  addLeaderboardEntriesToCache,
+  loadLeaderboardEntriesCache,
 } from "~/cache";
+import { searchParamSeparator } from "~/constants";
 import { regions } from "~/cookies";
 import { prisma } from "~/db";
 import type { Season } from "~/seasons";
 import type { Timings } from "~/timing.server";
 import { time } from "~/timing.server";
 import { orderedRegionsBySize } from "~/utils";
-
-export const searchParamSeparator = "~";
 
 export type WordOfGloryLeaderboardEntry = {
   id: string;
@@ -49,7 +48,7 @@ export const loadDataForRegion = async (
   }
 
   const key = [season.slug, region].join(searchParamSeparator);
-  const cached = await time(() => loadLeaderboardEntriesForSeason(key), {
+  const cached = await time(() => loadLeaderboardEntriesCache(key), {
     type: `loadFromRedis-${region}`,
     timings,
   });
@@ -96,7 +95,7 @@ export const loadDataForRegion = async (
     })
   );
 
-  await time(() => persistLeaderboardEntriesForSeason(key, entries), {
+  await time(() => addLeaderboardEntriesToCache(key, entries), {
     type: `persist-${region}`,
     timings,
   });
