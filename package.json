@@ -24,7 +24,7 @@
     "prisma:seed": "prisma db seed",
     "start": "tsx scripts/generate-env.ts && remix-serve build",
     "typecheck": "tsc",
-    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build && sentry-upload-sourcemaps && rimraf build/*.map && rimraf public/build/*.map && rimraf public/build/**/*.map"
+    "vercel-build": "nr prisma:generate && nr prisma:deploy && nr build && sentry-upload-sourcemaps && rimraf build/*.map && rimraf public/build/*.map && rimraf public/build/**/*.map && tsx scripts/bust-leaderboard-cache.ts"
   },
   "dependencies": {
     "@conform-to/dom": "0.6.3",

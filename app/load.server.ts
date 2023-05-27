@@ -31,7 +31,8 @@ export type WordOfGloryLeaderboardEntry = {
 export const loadDataForRegion = async (
   region: Regions,
   season: Season,
-  timings: Timings
+  timings: Timings,
+  forceInDev: boolean = false
 ): Promise<WordOfGloryLeaderboardEntry[]> => {
   const dateTimeFilter: Prisma.DateTimeFilter = {};
   const seasonStart = season.startDates[region];
@@ -48,10 +49,13 @@ export const loadDataForRegion = async (
   }
 
   const key = [season.slug, region].join(searchParamSeparator);
-  const cached = await time(() => loadLeaderboardEntriesCache(key), {
-    type: `loadFromRedis-${region}`,
-    timings,
-  });
+  const cached = await time(
+    () => loadLeaderboardEntriesCache(key, forceInDev),
+    {
+      type: `loadFromRedis-${region}`,
+      timings,
+    }
+  );
 
   if (cached) {
     return cached;
@@ -95,7 +99,7 @@ export const loadDataForRegion = async (
     })
   );
 
-  await time(() => addLeaderboardEntriesToCache(key, entries), {
+  await time(() => addLeaderboardEntriesToCache(key, entries, forceInDev), {
     type: `persist-${region}`,
     timings,
   });

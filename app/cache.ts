@@ -21,9 +21,10 @@ export type WordOfGloryLeaderboardEntry = {
 
 export const addLeaderboardEntriesToCache = async (
   key: string,
-  leaderboardEntries: WordOfGloryLeaderboardEntry[]
+  leaderboardEntries: WordOfGloryLeaderboardEntry[],
+  forceInDev: boolean = false
 ) => {
-  if (env.NODE_ENV === "development") {
+  if (env.NODE_ENV === "development" && !forceInDev) {
     debug("Not persisting entries in Redis due to running in development");
     return null;
   }
@@ -31,8 +32,11 @@ export const addLeaderboardEntriesToCache = async (
   return upstash.set(key, leaderboardEntries, { ex: 60 * 60 });
 };
 
-export const loadLeaderboardEntriesCache = async (key: string) => {
-  if (env.NODE_ENV === "development") {
+export const loadLeaderboardEntriesCache = async (
+  key: string,
+  forceInDev: boolean = false
+) => {
+  if (env.NODE_ENV === "development" && !forceInDev) {
     debug("Not retrieving entries from Redis due to running in development");
     return null;
   }
@@ -40,8 +44,8 @@ export const loadLeaderboardEntriesCache = async (key: string) => {
   return upstash.get<WordOfGloryLeaderboardEntry[]>(key);
 };
 
-export const clearLeaderboardEntriesCache = async (key: string) => {
-  if (env.NODE_ENV === "development") {
+export const clearLeaderboardEntriesCache = async (key: string, forceInDev: boolean = false) => {
+  if (env.NODE_ENV === "development" && !forceInDev) {
     debug("Not clearing entries from Redis due to running in development");
     return;
   }
