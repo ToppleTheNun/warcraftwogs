@@ -7,13 +7,21 @@ import {
 } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
-import { searchParamSeparator } from "~/constants";
+import { Footer } from "~/components/Footer";
+import {
+  cacheControl,
+  eTag,
+  expires,
+  lastModified,
+  searchParamSeparator,
+  serverTiming,
+  setCookie,
+} from "~/constants";
 import {
   determineRegionsToDisplayFromCookies,
   determineRegionsToDisplayFromSearchParams,
 } from "~/load.server";
 import { getEnhancedSeason } from "~/models/season.server";
-import { Footer } from "~/routes/$season/Footer";
 import { Header } from "~/routes/$season/Header";
 import { Leaderboard } from "~/routes/$season/Leaderboard";
 import { basicLinkClassName } from "~/routes/$season/tokens";
@@ -21,13 +29,6 @@ import type { EnhancedSeason } from "~/seasons";
 import { findSeasonByName } from "~/seasons";
 import type { Timings } from "~/timing.server";
 import { getServerTimeHeader, time } from "~/timing.server";
-
-const lastModified = "Last-Modified";
-const cacheControl = "Cache-Control";
-const eTag = "ETag";
-const setCookie = "Set-Cookie";
-const expires = "Expires";
-const serverTiming = "Server-Timing";
 
 export const headers: HeadersFunction = ({ loaderHeaders }) => {
   const loaderCache = loaderHeaders.get(cacheControl);

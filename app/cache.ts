@@ -44,7 +44,10 @@ export const loadLeaderboardEntriesCache = async (
   return upstash.get<WordOfGloryLeaderboardEntry[]>(key);
 };
 
-export const clearLeaderboardEntriesCache = async (key: string, forceInDev: boolean = false) => {
+export const clearLeaderboardEntriesCache = async (
+  key: string,
+  forceInDev: boolean = false
+) => {
   if (env.NODE_ENV === "development" && !forceInDev) {
     debug("Not clearing entries from Redis due to running in development");
     return;

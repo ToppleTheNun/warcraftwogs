@@ -4,9 +4,9 @@ import clsx from "clsx";
 import format from "date-fns/format";
 import enUS from "date-fns/locale/en-US";
 
+import { ExternalLink } from "~/components/ExternalLink";
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import { realms } from "~/realms";
-import { ExternalLink } from "~/routes/$season/ExternalLink";
 import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { isPresent } from "~/typeGuards";
