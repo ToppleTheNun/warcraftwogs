@@ -39,7 +39,7 @@ const LeaderboardRow = ({ entry, idx }: LeaderboardRowProps) => {
     (realm) => realm.name.replace(" ", "") === entry.realm
   );
   const playerUrl = realm
-    ? `https://warcraflogs.com/character/${entry.region}/${
+    ? `https://warcraftlogs.com/character/${entry.region}/${
         realm.slug
       }/${entry.name.toLowerCase()}`
     : null;
