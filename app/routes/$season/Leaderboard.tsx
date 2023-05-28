@@ -100,7 +100,7 @@ export const Leaderboard = ({ region, season }: LeaderboardProps) => {
       id={region}
     >
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full table-fixed text-left text-sm text-gray-400">
+        <table className="min-w-full w-max lg:w-full text-left text-sm text-gray-400 whitespace-nowrap">
           <caption className="bg-gray-800 p-5 text-left text-lg font-semibold text-white">
             {region.toUpperCase()}
             <p className="mt-1 text-sm font-normal text-gray-400">
