@@ -4245,6 +4245,7 @@ enum SubscriptionStatus {
 type ViewModels {
   googleAnalytics: JSON
   game: JSON
+  header: JSON
   headerTitle: JSON
   articleCategory(articleCategorySlug: String): JSON
   articleCategories: JSON
