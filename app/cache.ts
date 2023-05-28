@@ -29,7 +29,7 @@ export const addLeaderboardEntriesToCache = async (
     return null;
   }
   info(`Persisting entries in Redis for key: ${key}`);
-  return upstash.set(key, leaderboardEntries, { ex: 60 * 60 });
+  return upstash.set(key, leaderboardEntries);
 };
 
 export const loadLeaderboardEntriesCache = async (
