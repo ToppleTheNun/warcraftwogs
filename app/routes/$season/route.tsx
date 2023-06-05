@@ -112,7 +112,12 @@ export const loader = async ({
 
     params.append("regions", cookieRegions.join(searchParamSeparator));
 
-    return redirect(`/${season.slug}?${params.toString()}`, 307);
+    return redirect(`/${season.slug}?${params.toString()}`, {
+      status: 307,
+      headers: {
+        [serverTiming]: getServerTimeHeader(timings),
+      },
+    });
   }
 
   const regions = searchParamRegions;
