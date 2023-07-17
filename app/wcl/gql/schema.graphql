@@ -335,6 +335,11 @@ All the possible metrics.
 """
 enum CharacterRankingMetricType {
   """
+  Boss cDPS is unique to FFXIV and is damage done to the boss adjusted for raid-contributing buffs and debuffs.
+  """
+  bosscdps
+
+  """
   Boss damage per second.
   """
   bossdps
@@ -380,6 +385,11 @@ enum CharacterRankingMetricType {
   playerspeed
 
   """
+  cDPS is unique to FFXIV and is damage done adjusted for raid-contributing buffs and debuffs.
+  """
+  cdps
+
+  """
   nDPS is unique to FFXIV and is damage done adjusted for raid-contributing buffs and debuffs.
   """
   ndps
@@ -412,6 +422,16 @@ enum CharacterRankingMetricType {
   """
   Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.
   """
+  healercombinedcdps
+
+  """
+  Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.
+  """
+  healercombinedbosscdps
+
+  """
+  Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.
+  """
   healercombinedndps
 
   """
@@ -438,6 +458,16 @@ enum CharacterRankingMetricType {
   Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.
   """
   tankcombinedbossdps
+
+  """
+  Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.
+  """
+  tankcombinedcdps
+
+  """
+  Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.
+  """
+  tankcombinedbosscdps
 
   """
   Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.
@@ -4263,4 +4293,22 @@ type ViewModels {
   ): JSON
   snippets(snippetSlugs: [String]): JSON
   articleIndexPage: JSON
+  buildsZonePageSlugs: JSON
+  buildsZonePage(
+    rankingsSlug: String
+    zoneTypeSlug: String
+    difficultySlug: String
+    encounterSlug: String
+    affixesSlug: String
+  ): JSON
+  buildsSpecPageSlugs: JSON
+  buildsSpecPage(
+    classSlug: String
+    specSlug: String
+    zoneTypeSlug: String
+    categorySlug: String
+    difficultySlug: String
+    encounterSlug: String
+    affixesSlug: String
+  ): JSON
 }

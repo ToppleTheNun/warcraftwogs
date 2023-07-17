@@ -1,4 +1,4 @@
-import { writeFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { format } from "prettier";
@@ -13,8 +13,11 @@ export const generated = {
 } as const;
 `;
 
-writeFileSync(
+(async () => {
+  const formatted = await format(contents, { parser: "typescript" });
+  await writeFile(
     join(process.cwd(), "app", "env", "generated.ts"),
-    format(contents, { parser: "typescript" }),
-    "utf-8"
-);
+    formatted,
+    "utf-8",
+  );
+})();

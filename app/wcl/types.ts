@@ -14,7 +14,7 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
 };
 export type MakeEmpty<
   T extends { [key: string]: unknown },
-  K extends keyof T
+  K extends keyof T,
 > = { [_ in K]?: never };
 export type Incremental<T> =
   | T
@@ -23,7 +23,7 @@ export type Incremental<T> =
     };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string | number; output: string };
+  ID: { input: string; output: string };
   String: { input: string; output: string };
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
@@ -170,22 +170,30 @@ export type CharacterPagination = {
 
 /** All the possible metrics. */
 export enum CharacterRankingMetricType {
+  /** Boss cDPS is unique to FFXIV and is damage done to the boss adjusted for raid-contributing buffs and debuffs. */
+  Bosscdps = "bosscdps",
   /** Boss damage per second. */
   Bossdps = "bossdps",
   /** Boss nDPS is unique to FFXIV and is damage done to the boss adjusted for raid-contributing buffs and debuffs. */
   Bossndps = "bossndps",
   /** Boss rDPS is unique to FFXIV and is damage done to the boss adjusted for raid-contributing buffs and debuffs. */
   Bossrdps = "bossrdps",
+  /** cDPS is unique to FFXIV and is damage done adjusted for raid-contributing buffs and debuffs. */
+  Cdps = "cdps",
   /** Choose an appropriate default depending on the other selected parameters. */
   Default = "default",
   /** Damage per second. */
   Dps = "dps",
+  /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
+  Healercombinedbosscdps = "healercombinedbosscdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
   Healercombinedbossdps = "healercombinedbossdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
   Healercombinedbossndps = "healercombinedbossndps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
   Healercombinedbossrdps = "healercombinedbossrdps",
+  /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
+  Healercombinedcdps = "healercombinedcdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
   Healercombineddps = "healercombineddps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content. */
@@ -205,11 +213,15 @@ export enum CharacterRankingMetricType {
   /** rDPS is unique to FFXIV and is damage done adjusted for raid-contributing buffs and debuffs. */
   Rdps = "rdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
+  Tankcombinedbosscdps = "tankcombinedbosscdps",
+  /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
   Tankcombinedbossdps = "tankcombinedbossdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
   Tankcombinedbossndps = "tankcombinedbossndps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
   Tankcombinedbossrdps = "tankcombinedbossrdps",
+  /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
+  Tankcombinedcdps = "tankcombinedcdps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
   Tankcombineddps = "tankcombineddps",
   /** Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content. */
@@ -1851,6 +1863,10 @@ export type ViewModels = {
   articleCategory?: Maybe<Scalars["JSON"]["output"]>;
   articleIndexPage?: Maybe<Scalars["JSON"]["output"]>;
   articleSlugs?: Maybe<Scalars["JSON"]["output"]>;
+  buildsSpecPage?: Maybe<Scalars["JSON"]["output"]>;
+  buildsSpecPageSlugs?: Maybe<Scalars["JSON"]["output"]>;
+  buildsZonePage?: Maybe<Scalars["JSON"]["output"]>;
+  buildsZonePageSlugs?: Maybe<Scalars["JSON"]["output"]>;
   cmsNavigation?: Maybe<Scalars["JSON"]["output"]>;
   game?: Maybe<Scalars["JSON"]["output"]>;
   googleAnalytics?: Maybe<Scalars["JSON"]["output"]>;
@@ -1873,6 +1889,24 @@ export type ViewModelsArticleCategoryArgs = {
 export type ViewModelsArticleSlugsArgs = {
   articleCategorySlug?: InputMaybe<Scalars["String"]["input"]>;
   siteName?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type ViewModelsBuildsSpecPageArgs = {
+  affixesSlug?: InputMaybe<Scalars["String"]["input"]>;
+  categorySlug?: InputMaybe<Scalars["String"]["input"]>;
+  classSlug?: InputMaybe<Scalars["String"]["input"]>;
+  difficultySlug?: InputMaybe<Scalars["String"]["input"]>;
+  encounterSlug?: InputMaybe<Scalars["String"]["input"]>;
+  specSlug?: InputMaybe<Scalars["String"]["input"]>;
+  zoneTypeSlug?: InputMaybe<Scalars["String"]["input"]>;
+};
+
+export type ViewModelsBuildsZonePageArgs = {
+  affixesSlug?: InputMaybe<Scalars["String"]["input"]>;
+  difficultySlug?: InputMaybe<Scalars["String"]["input"]>;
+  encounterSlug?: InputMaybe<Scalars["String"]["input"]>;
+  rankingsSlug?: InputMaybe<Scalars["String"]["input"]>;
+  zoneTypeSlug?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type ViewModelsCmsNavigationArgs = {
@@ -2217,23 +2251,23 @@ export const GetPlayerDetailsDocument = gql`
 export type SdkFunctionWrapper = <T>(
   action: (requestHeaders?: Record<string, string>) => Promise<T>,
   operationName: string,
-  operationType?: string
+  operationType?: string,
 ) => Promise<T>;
 
 const defaultWrapper: SdkFunctionWrapper = (
   action,
   _operationName,
-  _operationType
+  _operationType,
 ) => action();
 
 export function getSdk(
   client: GraphQLClient,
-  withWrapper: SdkFunctionWrapper = defaultWrapper
+  withWrapper: SdkFunctionWrapper = defaultWrapper,
 ) {
   return {
     getFights(
       variables: GetFightsQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<GetFightsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
@@ -2242,12 +2276,12 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         "getFights",
-        "query"
+        "query",
       );
     },
     getFightsById(
       variables: GetFightsByIdQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<GetFightsByIdQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
@@ -2256,52 +2290,52 @@ export function getSdk(
             ...wrappedRequestHeaders,
           }),
         "getFightsById",
-        "query"
+        "query",
       );
     },
     getWordOfGloryHealingEvents(
       variables: GetWordOfGloryHealingEventsQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<GetWordOfGloryHealingEventsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.request<GetWordOfGloryHealingEventsQuery>(
             GetWordOfGloryHealingEventsDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
+            { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         "getWordOfGloryHealingEvents",
-        "query"
+        "query",
       );
     },
     getCombatantInfos(
       variables: GetCombatantInfosQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<GetCombatantInfosQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.request<GetCombatantInfosQuery>(
             GetCombatantInfosDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
+            { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         "getCombatantInfos",
-        "query"
+        "query",
       );
     },
     getPlayerDetails(
       variables: GetPlayerDetailsQueryVariables,
-      requestHeaders?: GraphQLClientRequestHeaders
+      requestHeaders?: GraphQLClientRequestHeaders,
     ): Promise<GetPlayerDetailsQuery> {
       return withWrapper(
         (wrappedRequestHeaders) =>
           client.request<GetPlayerDetailsQuery>(
             GetPlayerDetailsDocument,
             variables,
-            { ...requestHeaders, ...wrappedRequestHeaders }
+            { ...requestHeaders, ...wrappedRequestHeaders },
           ),
         "getPlayerDetails",
-        "query"
+        "query",
       );
     },
   };

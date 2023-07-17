@@ -931,6 +931,12 @@
         "interfaces": null,
         "enumValues": [
           {
+            "name": "bosscdps",
+            "description": "Boss cDPS is unique to FFXIV and is damage done to the boss adjusted for raid-contributing buffs and debuffs.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "bossdps",
             "description": "Boss damage per second.",
             "isDeprecated": false,
@@ -949,6 +955,12 @@
             "deprecationReason": null
           },
           {
+            "name": "cdps",
+            "description": "cDPS is unique to FFXIV and is damage done adjusted for raid-contributing buffs and debuffs.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "default",
             "description": "Choose an appropriate default depending on the other selected parameters.",
             "isDeprecated": false,
@@ -957,6 +969,12 @@
           {
             "name": "dps",
             "description": "Damage per second.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "healercombinedbosscdps",
+            "description": "Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.",
             "isDeprecated": false,
             "deprecationReason": null
           },
@@ -974,6 +992,12 @@
           },
           {
             "name": "healercombinedbossrdps",
+            "description": "Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "healercombinedcdps",
             "description": "Unique to FFXIV. Represents the combined ranking for a pair of healers in eight player content.",
             "isDeprecated": false,
             "deprecationReason": null
@@ -1033,6 +1057,12 @@
             "deprecationReason": null
           },
           {
+            "name": "tankcombinedbosscdps",
+            "description": "Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tankcombinedbossdps",
             "description": "Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.",
             "isDeprecated": false,
@@ -1046,6 +1076,12 @@
           },
           {
             "name": "tankcombinedbossrdps",
+            "description": "Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "tankcombinedcdps",
             "description": "Unique to FFXIV. Represents the combined ranking for a pair of tanks in eight player content.",
             "isDeprecated": false,
             "deprecationReason": null
@@ -10196,6 +10232,200 @@
                 "deprecationReason": null
               }
             ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "buildsSpecPage",
+            "description": null,
+            "args": [
+              {
+                "name": "affixesSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "categorySlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "classSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "difficultySlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "encounterSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "specSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "zoneTypeSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "buildsSpecPageSlugs",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "buildsZonePage",
+            "description": null,
+            "args": [
+              {
+                "name": "affixesSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "difficultySlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "encounterSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "rankingsSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "name": "zoneTypeSlug",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "buildsZonePageSlugs",
+            "description": null,
+            "args": [],
             "type": {
               "kind": "SCALAR",
               "name": "JSON",
