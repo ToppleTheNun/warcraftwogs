@@ -16,7 +16,6 @@ import {
 } from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
 import { Analytics } from "@vercel/analytics/react";
-import { SSRProvider } from "react-aria";
 
 import { env } from "~/env/client";
 import stylesheet from "~/tailwind.css";
@@ -59,7 +58,7 @@ export const links: LinksFunction = () => {
 const title = "Warcraft WoGs";
 
 export const meta: V2_MetaFunction = () => {
-  const url = "https://warcraftwogs.vercel.app/";
+  const url = "https://warcraftwogs.com/";
   const description = "Word of Glory leaderboard for World of Warcraft.";
 
   return [
@@ -123,9 +122,7 @@ function App() {
       </head>
       <body className="min-h-screen">
         <div className="flex min-h-screen flex-col">
-          <SSRProvider>
-            <Outlet />
-          </SSRProvider>
+          <Outlet />
         </div>
         <ScrollRestoration />
         <script
