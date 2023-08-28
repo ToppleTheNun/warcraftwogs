@@ -1,21 +1,22 @@
 import "dotenv/config";
 
 import { writeFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import type { Regions } from "@prisma/client";
 import { ofetch } from "ofetch";
 import { format } from "prettier";
 
-import { env } from "~/env/server";
-import { error } from "~/log";
+import { init } from "~/lib/env.server";
+import { error } from "~/lib/log.server";
 
 export const authenticateWithBlizzard = (): Promise<string | null> => {
   return ofetch(
-    `https://us.battle.net/oauth/token?grant_type=client_credentials&client_id=${env.BATTLE_NET_CLIENT_ID}&client_secret=${env.BATTLE_NET_CLIENT_SECRET}`,
+    `https://us.battle.net/oauth/token?grant_type=client_credentials&client_id=${process.env.BATTLE_NET_CLIENT_ID}&client_secret=${process.env.BATTLE_NET_CLIENT_SECRET}`,
     {
       method: "POST",
-    }
+    },
   )
     .then((json) => {
       if ("access_token" in json) {
@@ -30,7 +31,7 @@ export const authenticateWithBlizzard = (): Promise<string | null> => {
 export const retrieveDataFromBlizzard = (
   region: Regions,
   locale: string,
-  accessToken: string
+  accessToken: string,
 ): Promise<RealmsResponse | NotFound> => {
   const url = `https://${region}.api.blizzard.com/data/wow/realm/index?namespace=dynamic-${region}&locale=${locale}&access_token=${accessToken}`;
 
@@ -38,6 +39,7 @@ export const retrieveDataFromBlizzard = (
 };
 
 (async () => {
+  init();
   const accessToken = await authenticateWithBlizzard();
   if (!accessToken) {
     throw new Error("Unable to authenticate with Blizzard!");
@@ -55,22 +57,22 @@ export const retrieveDataFromBlizzard = (
   };
   if (!("code" in usRealms)) {
     realmsByRegion["us"] = usRealms.realms.map<SimpleRealm>(
-      ({ name, slug }) => ({ name, slug })
+      ({ name, slug }) => ({ name, slug }),
     );
   }
   if (!("code" in euRealms)) {
     realmsByRegion["eu"] = euRealms.realms.map<SimpleRealm>(
-      ({ name, slug }) => ({ name, slug })
+      ({ name, slug }) => ({ name, slug }),
     );
   }
   if (!("code" in krRealms)) {
     realmsByRegion["kr"] = krRealms.realms.map<SimpleRealm>(
-      ({ name, slug }) => ({ name, slug })
+      ({ name, slug }) => ({ name, slug }),
     );
   }
   if (!("code" in twRealms)) {
     realmsByRegion["tw"] = twRealms.realms.map<SimpleRealm>(
-      ({ name, slug }) => ({ name, slug })
+      ({ name, slug }) => ({ name, slug }),
     );
   }
 
@@ -83,15 +85,13 @@ export const retrieveDataFromBlizzard = (
     }
     
     export const realms: Record<Regions, Realm[]> = ${JSON.stringify(
-      realmsByRegion
+      realmsByRegion,
     )};
   `;
-  writeFileSync(
+  await writeFile(
     join(process.cwd(), "app", "realms.ts"),
-    format(tsOutput, { parser: "typescript" }),
-    {
-      encoding: "utf-8",
-    }
+    await format(tsOutput, { parser: "typescript" }),
+    { encoding: "utf-8" },
   );
 })();
 

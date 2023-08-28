@@ -4,50 +4,25 @@
  * For more information, see https://remix.run/file-conventions/entry.client
  */
 
-import { RemixBrowser, useLocation, useMatches } from "@remix-run/react";
-import * as Sentry from "@sentry/remix";
-import { startTransition, StrictMode, useEffect } from "react";
+import { RemixBrowser } from "@remix-run/react";
+import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 
-import reportWebVitals from "~/reportWebVitals";
-import { sendToVercelAnalytics } from "~/vitals";
+import { reportWebVitalsToVercelAnalytics } from "~/lib/vitals.client";
 
-const hydrate = () => {
+if (ENV.MODE === "production" && ENV.SENTRY_DSN) {
+  import("./lib/monitoring.client").then(({ init }) => init());
+}
+
+const hydrate = () =>
   startTransition(() => {
     hydrateRoot(
       document,
       <StrictMode>
         <RemixBrowser />
-      </StrictMode>
+      </StrictMode>,
     );
   });
-};
-
-if (window.ENV.SENTRY_DSN) {
-  Sentry.init({
-    dsn: window.ENV.SENTRY_DSN,
-    integrations: [
-      new Sentry.BrowserTracing({
-        routingInstrumentation: Sentry.remixRouterInstrumentation(
-          useEffect,
-          useLocation,
-          useMatches
-        ),
-      }),
-      new Sentry.Replay(),
-    ],
-
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-
-    // Capture Replay for 10% of all sessions,
-    // plus for 100% of sessions with an error
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0,
-  });
-}
 
 if (typeof requestIdleCallback === "function") {
   requestIdleCallback(hydrate);
@@ -57,4 +32,4 @@ if (typeof requestIdleCallback === "function") {
   setTimeout(hydrate, 1);
 }
 
-reportWebVitals(sendToVercelAnalytics);
+reportWebVitalsToVercelAnalytics();

@@ -2,9 +2,8 @@ import type { Regions } from "@prisma/client";
 import { produce } from "immer";
 import groupBy from "lodash/groupBy";
 
-import { clearLeaderboardEntriesCache } from "~/cache";
+import { clearLeaderboardEntriesCache } from "~/lib/cache.server";
 import { searchParamSeparator } from "~/constants";
-import { prisma } from "~/db";
 import { findOrCreateCharacter } from "~/ingest/character.server";
 import {
   DIFFERENT_REPORT_TOLERANCE,
@@ -19,14 +18,15 @@ import type {
   ReportWordOfGlory,
   RequiredHealing,
 } from "~/ingest/types";
+import { prisma } from "~/lib/db.server";
+import type { Timings } from "~/lib/timing.server";
+import { time } from "~/lib/timing.server";
 import {
   getMinimumAmountOfHealing,
   getMinimumAmountOfOverhealing,
   getMinimumAmountOfTotalHealing,
 } from "~/models/wordOfGlory.server";
 import { findSeasonByTimestamp } from "~/seasons";
-import type { Timings } from "~/timing.server";
-import { time } from "~/timing.server";
 import { isPresent } from "~/typeGuards";
 import { isWithinTolerance } from "~/utils";
 import { getWordOfGloryHealing } from "~/wcl/queries";
@@ -34,14 +34,14 @@ import { wordOfGloryHealEventArraySchema } from "~/wcl/schemas";
 
 const getReportWordOfGlorys = async (
   report: ReportWithIngestedFights,
-  timings: Timings
+  timings: Timings,
 ): Promise<ReportWordOfGlory[]> => {
   const reportID = report.reportID;
   const fightIDs = report.ingestedFights.map((fight) => fight.fightID);
 
   const rawHealingEventsData = await time(
     () => getWordOfGloryHealing({ reportID: report.reportID, fightIDs }),
-    { type: "getWordOfGloryHealing", timings }
+    { type: "getWordOfGloryHealing", timings },
   );
   const rawWordOfGloryHealingEvents =
     rawHealingEventsData.reportData?.report?.events?.data;
@@ -60,20 +60,21 @@ const getReportWordOfGlorys = async (
 
 const makeReportWordOfGloryIngestible = (
   wordOfGlory: ReportWordOfGlory,
-  report: ReportWithIngestedFights
+  report: ReportWithIngestedFights,
 ): IngestibleReportWordOfGlory | null => {
   const reportFight = report.ingestedFights.find(
     (fight) =>
-      fight.report === wordOfGlory.report && fight.fightID === wordOfGlory.fight
+      fight.report === wordOfGlory.report &&
+      fight.fightID === wordOfGlory.fight,
   );
   if (!reportFight) {
     return null;
   }
   const source = reportFight.friendlyPlayerDetails.find(
-    (player) => wordOfGlory.sourceID === player.id
+    (player) => wordOfGlory.sourceID === player.id,
   );
   const target = reportFight.friendlyPlayerDetails.find(
-    (player) => wordOfGlory.targetID === player.id
+    (player) => wordOfGlory.targetID === player.id,
   );
   if (!source || !target) {
     return null;
@@ -92,24 +93,24 @@ const makeReportWordOfGloryIngestible = (
 const numberOfParsesToCheck = 50;
 const getRequiredHealingToIngest = async (
   region: Regions,
-  timings: Timings
+  timings: Timings,
 ): Promise<RequiredHealing> => ({
   heal: await getMinimumAmountOfHealing(numberOfParsesToCheck, region, timings),
   overheal: await getMinimumAmountOfOverhealing(
     numberOfParsesToCheck,
     region,
-    timings
+    timings,
   ),
   totalHeal: await getMinimumAmountOfTotalHealing(
     numberOfParsesToCheck,
     region,
-    timings
+    timings,
   ),
 });
 
 const hasRequiredHealing = (
   wordOfGlory: IngestibleReportWordOfGlory,
-  requiredHealing: RequiredHealing
+  requiredHealing: RequiredHealing,
 ) => {
   const heal = wordOfGlory.amount;
   const overheal = wordOfGlory.overheal;
@@ -126,7 +127,7 @@ const hasRequiredHealing = (
  */
 export const afterimageReducer = (
   accumulator: IngestibleReportWordOfGlory[],
-  wordOfGlory: IngestibleReportWordOfGlory
+  wordOfGlory: IngestibleReportWordOfGlory,
 ): IngestibleReportWordOfGlory[] => {
   const matchingWordOfGloryIdx = accumulator.findIndex(
     (fromAcc) =>
@@ -134,7 +135,7 @@ export const afterimageReducer = (
         original: fromAcc.timestamp,
         toCheck: wordOfGlory.timestamp,
         tolerance: MINIMUM_GCD_MS,
-      }) && fromAcc.source.guid === wordOfGlory.source.guid
+      }) && fromAcc.source.guid === wordOfGlory.source.guid,
   );
   if (matchingWordOfGloryIdx < 0) {
     return [...accumulator, wordOfGlory];
@@ -155,7 +156,7 @@ export const afterimageReducer = (
 const ingestWordOfGlory = async (
   ingestibleWordOfGlory: IngestibleReportWordOfGlory,
   characterId: number,
-  timings: Timings
+  timings: Timings,
 ): Promise<IngestedReportWordOfGlory> => {
   const existingWordOfGlory = await time(
     () =>
@@ -166,17 +167,17 @@ const ingestWordOfGlory = async (
           },
           timestamp: {
             gte: new Date(
-              ingestibleWordOfGlory.timestamp - DIFFERENT_REPORT_TOLERANCE
+              ingestibleWordOfGlory.timestamp - DIFFERENT_REPORT_TOLERANCE,
             ),
             lte: new Date(
-              ingestibleWordOfGlory.timestamp + DIFFERENT_REPORT_TOLERANCE
+              ingestibleWordOfGlory.timestamp + DIFFERENT_REPORT_TOLERANCE,
             ),
           },
           sourceId: ingestibleWordOfGlory.source.guid,
           targetId: ingestibleWordOfGlory.target.guid,
         },
       }),
-    { type: "prisma.wordOfGlory.findFirst", timings }
+    { type: "prisma.wordOfGlory.findFirst", timings },
   );
   if (!existingWordOfGlory) {
     const createdWordOfGlory = await time(
@@ -207,20 +208,20 @@ const ingestWordOfGlory = async (
       {
         type: "prisma.wordOfGlory.create",
         timings,
-      }
+      },
     );
     return { ...ingestibleWordOfGlory, wordOfGlory: createdWordOfGlory };
   }
 
   const healDiff = Math.abs(
-    existingWordOfGlory.heal - ingestibleWordOfGlory.amount
+    existingWordOfGlory.heal - ingestibleWordOfGlory.amount,
   );
   const overhealDiff = Math.abs(
-    existingWordOfGlory.overheal - ingestibleWordOfGlory.overheal
+    existingWordOfGlory.overheal - ingestibleWordOfGlory.overheal,
   );
   const totalHealDiff = Math.abs(
     existingWordOfGlory.totalHeal -
-      (ingestibleWordOfGlory.amount + ingestibleWordOfGlory.overheal)
+      (ingestibleWordOfGlory.amount + ingestibleWordOfGlory.overheal),
   );
   if (
     healDiff < HEAL_AMOUNT_TOLERANCE ||
@@ -245,14 +246,14 @@ const ingestWordOfGlory = async (
     {
       type: "prisma.wordOfGlory.update",
       timings,
-    }
+    },
   );
   return { ...ingestibleWordOfGlory, wordOfGlory: updatedWordOfGlory };
 };
 
 const ingestWordOfGlorysForCharacter = async (
   ingestibleWordOfGlories: IngestibleReportWordOfGlory[],
-  timings: Timings
+  timings: Timings,
 ) => {
   if (ingestibleWordOfGlories.length === 0) {
     return null;
@@ -264,35 +265,35 @@ const ingestWordOfGlorysForCharacter = async (
   const character = await findOrCreateCharacter(firstWordOfGlory, timings);
   return Promise.all(
     ingestibleWordOfGlories.map((wordOfGlory) =>
-      ingestWordOfGlory(wordOfGlory, character.id, timings)
-    )
+      ingestWordOfGlory(wordOfGlory, character.id, timings),
+    ),
   );
 };
 
 const ingestWordOfGlorys = (
   ingestibleWordOfGlories: IngestibleReportWordOfGlory[],
-  timings: Timings
+  timings: Timings,
 ) => {
   const grouped = groupBy(
     ingestibleWordOfGlories,
-    (wordOfGlory) => wordOfGlory.source.guid
+    (wordOfGlory) => wordOfGlory.source.guid,
   );
 
   return Promise.all(
     Object.values(grouped).map((wordOfGlorys) =>
-      ingestWordOfGlorysForCharacter(wordOfGlorys, timings)
-    )
+      ingestWordOfGlorysForCharacter(wordOfGlorys, timings),
+    ),
   );
 };
 
 export const ingestWordOfGloryHealsFromReportForFights = async (
   report: ReportWithIngestedFights,
-  timings: Timings
+  timings: Timings,
 ): Promise<ReportWithIngestedWordOfGlorys> => {
   const reportWordOfGlorys = await getReportWordOfGlorys(report, timings);
   const requiredHealing = await getRequiredHealingToIngest(
     report.region,
-    timings
+    timings,
   );
   const ingestibleWordOfGlorys = reportWordOfGlorys
     .map((wordOfGlory) => makeReportWordOfGloryIngestible(wordOfGlory, report))
@@ -301,7 +302,7 @@ export const ingestWordOfGloryHealsFromReportForFights = async (
     .reduce(afterimageReducer, []);
   const ingestedWordOfGlorys = await ingestWordOfGlorys(
     ingestibleWordOfGlorys,
-    timings
+    timings,
   );
   const filteredIngestedWordOfGlorys = ingestedWordOfGlorys
     .flat()

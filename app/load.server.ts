@@ -4,13 +4,13 @@ import { Regions } from "@prisma/client";
 import {
   addLeaderboardEntriesToCache,
   loadLeaderboardEntriesCache,
-} from "~/cache";
+} from "~/lib/cache.server";
 import { searchParamSeparator } from "~/constants";
 import { regions } from "~/cookies";
-import { prisma } from "~/db";
+import { prisma } from "~/lib/db.server";
+import type { Timings } from "~/lib/timing.server";
+import { time } from "~/lib/timing.server";
 import type { Season } from "~/seasons";
-import type { Timings } from "~/timing.server";
-import { time } from "~/timing.server";
 import { orderedRegionsBySize } from "~/utils";
 
 export type WordOfGloryLeaderboardEntry = {

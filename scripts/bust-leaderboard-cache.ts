@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { Regions } from "@prisma/client";
 
-import { clearLeaderboardEntriesCache } from "~/cache";
+import { clearLeaderboardEntriesCache } from "~/lib/cache";
 import { searchParamSeparator } from "~/constants";
 import { loadDataForRegion } from "~/load.server";
 import { seasons } from "~/seasons";

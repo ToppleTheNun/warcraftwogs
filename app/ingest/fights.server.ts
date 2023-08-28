@@ -1,6 +1,5 @@
 import sortBy from "lodash/sortBy";
 
-import { prisma } from "~/db";
 import { DIFFERENT_REPORT_TOLERANCE } from "~/ingest/constants";
 import type {
   IngestedReportFight,
@@ -10,8 +9,9 @@ import type {
   ReportWithIngestedFights,
   ReportWithIngestibleFights,
 } from "~/ingest/types";
-import type { Timings } from "~/timing.server";
-import { time } from "~/timing.server";
+import { prisma } from "~/lib/db.server";
+import type { Timings } from "~/lib/timing.server";
+import { time } from "~/lib/timing.server";
 import { isPresent } from "~/typeGuards";
 import { isRegion } from "~/utils";
 import { getFights, getPlayerDetails } from "~/wcl/queries";

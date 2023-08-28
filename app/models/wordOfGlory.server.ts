@@ -1,13 +1,13 @@
 import type { Regions } from "@prisma/client";
 
-import { prisma } from "~/db";
-import type { Timings } from "~/timing.server";
-import { time } from "~/timing.server";
+import { prisma } from "~/lib/db.server";
+import type { Timings } from "~/lib/timing.server";
+import { time } from "~/lib/timing.server";
 
 export const getMinimumAmountOfHealing = async (
   parsesToCheck: number,
   region: Regions,
-  timings: Timings
+  timings: Timings,
 ) => {
   const result = await time(
     () =>
@@ -27,7 +27,7 @@ export const getMinimumAmountOfHealing = async (
           },
         },
       }),
-    { type: "getMinimumAmountOfHealing", timings }
+    { type: "getMinimumAmountOfHealing", timings },
   );
   return result._min.heal ?? 0;
 };
@@ -35,7 +35,7 @@ export const getMinimumAmountOfHealing = async (
 export const getMinimumAmountOfOverhealing = async (
   parsesToCheck: number,
   region: Regions,
-  timings: Timings
+  timings: Timings,
 ) => {
   const result = await time(
     () =>
@@ -55,7 +55,7 @@ export const getMinimumAmountOfOverhealing = async (
           },
         },
       }),
-    { type: "getMinimumAmountOfOverhealing", timings }
+    { type: "getMinimumAmountOfOverhealing", timings },
   );
   return result._min.overheal ?? 0;
 };
@@ -63,7 +63,7 @@ export const getMinimumAmountOfOverhealing = async (
 export const getMinimumAmountOfTotalHealing = async (
   parsesToCheck: number,
   region: Regions,
-  timings: Timings
+  timings: Timings,
 ) => {
   const result = await time(
     () =>
@@ -83,7 +83,7 @@ export const getMinimumAmountOfTotalHealing = async (
           },
         },
       }),
-    { type: "getMinimumAmountOfTotalHealing", timings }
+    { type: "getMinimumAmountOfTotalHealing", timings },
   );
   return result._min.totalHeal ?? 0;
 };

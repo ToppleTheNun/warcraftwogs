@@ -2,9 +2,9 @@ import { redirect, type TypedResponse } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
 
 import { serverTiming } from "~/constants";
+import type { Timings } from "~/lib/timing.server";
+import { getServerTimeHeader, time } from "~/lib/timing.server";
 import { findSeasonByName } from "~/seasons";
-import type { Timings } from "~/timing.server";
-import { getServerTimeHeader, time } from "~/timing.server";
 
 export const loader = async (): Promise<TypedResponse<never>> => {
   const timings: Timings = {};

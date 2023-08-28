@@ -1,10 +1,13 @@
 import type { Regions } from "@prisma/client";
 import add from "date-fns/add";
 
+import type { Timings } from "~/lib/timing.server";
 import { loadDataForRegion } from "~/load.server";
-import type { EnhancedSeason } from "~/seasons";
-import { hasSeasonEndedForAllRegions, type Season } from "~/seasons";
-import type { Timings } from "~/timing.server";
+import {
+  type EnhancedSeason,
+  hasSeasonEndedForAllRegions,
+  type Season,
+} from "~/seasons";
 import { isPresent } from "~/typeGuards";
 import { orderedRegionsBySize } from "~/utils";
 
@@ -56,9 +59,9 @@ export const getEnhancedSeason = async ({
       enhancedSeason.dataByRegion[region] = await loadDataForRegion(
         region,
         season,
-        timings
+        timings,
       );
-    })
+    }),
   );
 
   const mostRecentDataset = Object.values(enhancedSeason.dataByRegion)
@@ -66,7 +69,7 @@ export const getEnhancedSeason = async ({
     .reduce(
       (acc, leaderboard) =>
         acc > leaderboard.timestamp ? acc : leaderboard.timestamp,
-      0
+      0,
     );
 
   headers[lastModified] = new Date(mostRecentDataset).toUTCString();

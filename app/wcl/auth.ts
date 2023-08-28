@@ -1,4 +1,4 @@
-import { upstash } from "~/redis";
+import { upstash } from "~/lib/redis.server";
 
 export type WCLOAuthResponse = {
   access_token: string;

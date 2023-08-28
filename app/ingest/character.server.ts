@@ -1,7 +1,7 @@
-import { prisma } from "~/db";
 import type { IngestibleReportWordOfGlory } from "~/ingest/types";
-import type { Timings } from "~/timing.server";
-import { time } from "~/timing.server";
+import { prisma } from "~/lib/db.server";
+import type { Timings } from "~/lib/timing.server";
+import { time } from "~/lib/timing.server";
 
 export const findOrCreateCharacter = (
   ingestibleWordOfGlory: IngestibleReportWordOfGlory,

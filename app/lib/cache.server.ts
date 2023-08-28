@@ -1,8 +1,7 @@
 import type { Regions } from "@prisma/client";
 
-import { env } from "~/env/server";
-import { debug, info } from "~/log";
-import { upstash } from "~/redis";
+import { debug, info } from "~/lib/log.server";
+import { upstash } from "~/lib/redis.server";
 
 export type WordOfGloryLeaderboardEntry = {
   id: string;
@@ -22,9 +21,9 @@ export type WordOfGloryLeaderboardEntry = {
 export const addLeaderboardEntriesToCache = async (
   key: string,
   leaderboardEntries: WordOfGloryLeaderboardEntry[],
-  forceInDev: boolean = false
+  forceInDev: boolean = false,
 ) => {
-  if (env.NODE_ENV === "development" && !forceInDev) {
+  if (ENV.MODE === "development" && !forceInDev) {
     debug("Not persisting entries in Redis due to running in development");
     return null;
   }
@@ -34,9 +33,9 @@ export const addLeaderboardEntriesToCache = async (
 
 export const loadLeaderboardEntriesCache = async (
   key: string,
-  forceInDev: boolean = false
+  forceInDev: boolean = false,
 ) => {
-  if (env.NODE_ENV === "development" && !forceInDev) {
+  if (ENV.MODE === "development" && !forceInDev) {
     debug("Not retrieving entries from Redis due to running in development");
     return null;
   }
@@ -46,9 +45,9 @@ export const loadLeaderboardEntriesCache = async (
 
 export const clearLeaderboardEntriesCache = async (
   key: string,
-  forceInDev: boolean = false
+  forceInDev: boolean = false,
 ) => {
-  if (env.NODE_ENV === "development" && !forceInDev) {
+  if (ENV.MODE === "development" && !forceInDev) {
     debug("Not clearing entries from Redis due to running in development");
     return;
   }

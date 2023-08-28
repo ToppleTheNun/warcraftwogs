@@ -10,8 +10,8 @@ import { z } from "zod";
 import { Spinner } from "~/components/old/Spinner";
 import { linkClassName } from "~/components/old/tokens";
 import { ingestWarcraftLogsReport } from "~/ingest/log.server";
-import type { Timings } from "~/timing.server";
-import { getServerTimeHeader } from "~/timing.server";
+import type { Timings } from "~/lib/timing.server";
+import { getServerTimeHeader } from "~/lib/timing.server";
 import { getReportCode } from "~/utils";
 
 const serverTiming = "Server-Timing";

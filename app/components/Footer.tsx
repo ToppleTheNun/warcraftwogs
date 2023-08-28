@@ -1,8 +1,6 @@
 import { Coffee, DollarSign, type LucideIcon, Twitter } from "lucide-react";
 import { version } from "react";
 
-import { env } from "~/env/client";
-
 import { ExternalLink } from "./ExternalLink";
 import { Logo } from "./Logo";
 
@@ -102,7 +100,7 @@ export const Footer = (): JSX.Element => {
 
         <small className="flex w-full items-center justify-center space-x-1 space-y-1 pb-6 pt-2 text-xs text-stone-300 md:justify-end md:space-x-2 md:space-y-0">
           <ExternalLink href="https://github.com/ToppleTheNun/warcraftwogs">
-            <GitHub /> built at {env.BUILD_TIME}
+            <GitHub /> built at {ENV.BUILD_TIME}
           </ExternalLink>
         </small>
       </footer>

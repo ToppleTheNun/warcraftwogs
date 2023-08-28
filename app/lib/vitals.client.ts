@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-export function sendToVercelAnalytics(metric: Metric): void {
+function sendToVercelAnalytics(metric: Metric): void {
   const analyticsId = window.ENV.VERCEL_ANALYTICS_ID;
 
   if (!analyticsId) {
@@ -43,3 +43,15 @@ export function sendToVercelAnalytics(metric: Metric): void {
     });
   }
 }
+
+export const reportWebVitalsToVercelAnalytics = (): void => {
+  import(/* webpackChunkName: "web-vitals" */ "web-vitals").then(
+    ({ onCLS, onFID, onFCP, onLCP, onTTFB }) => {
+      onCLS(sendToVercelAnalytics);
+      onFID(sendToVercelAnalytics);
+      onFCP(sendToVercelAnalytics);
+      onLCP(sendToVercelAnalytics);
+      onTTFB(sendToVercelAnalytics);
+    },
+  );
+};

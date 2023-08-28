@@ -1,7 +1,5 @@
 import { GraphQLClient } from "graphql-request";
 
-import { env } from "~/env/server";
-
 import type { WCLAuth, WCLOAuthResponse } from "./auth";
 import { getWCLAuthentication, setWCLAuthentication } from "./auth";
 import type { Sdk } from "./types";
@@ -44,7 +42,8 @@ export const getGqlClient = async (): Promise<GraphQLClient> => {
   if (
     // in test, `getWLAuthentication` returns mock data
     process.env.NODE_ENV !== "test" &&
-    (!env.WARCRAFT_LOGS_CLIENT_ID || !env.WARCRAFT_LOGS_CLIENT_SECRET)
+    (!process.env.WARCRAFT_LOGS_CLIENT_ID ||
+      !process.env.WARCRAFT_LOGS_CLIENT_SECRET)
   ) {
     throw new Error("missing WCL environment variables");
   }
@@ -78,7 +77,7 @@ export const getGqlClient = async (): Promise<GraphQLClient> => {
           authorization: `Bearer ${persisted.token}`,
         },
         fetch: global.fetch,
-      }
+      },
     );
 
     cache.expiresAt = persisted.expiresAt * 1000;
@@ -89,8 +88,8 @@ export const getGqlClient = async (): Promise<GraphQLClient> => {
 
   try {
     const body = new URLSearchParams({
-      client_id: env.WARCRAFT_LOGS_CLIENT_ID,
-      client_secret: env.WARCRAFT_LOGS_CLIENT_SECRET,
+      client_id: process.env.WARCRAFT_LOGS_CLIENT_ID,
+      client_secret: process.env.WARCRAFT_LOGS_CLIENT_SECRET,
       grant_type: "client_credentials",
     }).toString();
 

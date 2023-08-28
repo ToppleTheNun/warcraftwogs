@@ -20,6 +20,8 @@ import {
   serverTiming,
   setCookie,
 } from "~/constants";
+import type { Timings } from "~/lib/timing.server";
+import { getServerTimeHeader, time } from "~/lib/timing.server";
 import {
   determineRegionsToDisplayFromCookies,
   determineRegionsToDisplayFromSearchParams,
@@ -27,8 +29,6 @@ import {
 import { getEnhancedSeason } from "~/models/season.server";
 import type { EnhancedSeason } from "~/seasons";
 import { findSeasonByName } from "~/seasons";
-import type { Timings } from "~/timing.server";
-import { getServerTimeHeader, time } from "~/timing.server";
 
 export const headers: HeadersFunction = ({ loaderHeaders }) => {
   const loaderCache = loaderHeaders.get(cacheControl);

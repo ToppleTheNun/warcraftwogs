@@ -1,9 +1,4 @@
-import type {
-  LinksFunction,
-  SerializeFrom,
-  TypedResponse,
-  V2_MetaFunction,
-} from "@remix-run/node";
+import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -17,7 +12,7 @@ import {
 import { withSentry } from "@sentry/remix";
 import { Analytics } from "@vercel/analytics/react";
 
-import { env } from "~/env/client";
+import { getEnv } from "~/lib/env.server";
 import stylesheet from "~/tailwind.css";
 
 export const links: LinksFunction = () => {
@@ -91,19 +86,9 @@ export const meta: V2_MetaFunction = () => {
 
 export const loader = () => {
   return json({
-    ENV: {
-      SENTRY_DSN: env.SENTRY_DSN,
-      VERCEL_ANALYTICS_ID: env.VERCEL_ANALYTICS_ID,
-    },
+    ENV: getEnv(),
   });
 };
-
-declare global {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
-  interface Window {
-    ENV: SerializeFrom<typeof loader>["ENV"];
-  }
-}
 
 function App() {
   const data = useLoaderData<typeof loader>();

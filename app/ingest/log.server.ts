@@ -1,5 +1,5 @@
 import { ingestWordOfGloryHealsFromReportForFights } from "~/ingest/wogHealingEvents.server";
-import type { Timings } from "~/timing.server";
+import type { Timings } from "~/lib/timing.server";
 
 import { ingestFightsFromReport } from "./fights.server";
 
