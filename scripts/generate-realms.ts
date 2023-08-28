@@ -1,6 +1,5 @@
 import "dotenv/config";
 
-import { writeFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
@@ -8,7 +7,7 @@ import type { Regions } from "@prisma/client";
 import { ofetch } from "ofetch";
 import { format } from "prettier";
 
-import { init } from "~/lib/env.server";
+import { getEnv, init } from "~/lib/env.server";
 import { error } from "~/lib/log.server";
 
 export const authenticateWithBlizzard = (): Promise<string | null> => {
@@ -40,6 +39,7 @@ export const retrieveDataFromBlizzard = (
 
 (async () => {
   init();
+  global.ENV = getEnv();
   const accessToken = await authenticateWithBlizzard();
   if (!accessToken) {
     throw new Error("Unable to authenticate with Blizzard!");
