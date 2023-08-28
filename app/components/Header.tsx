@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 import { Logo } from "~/components/Logo";
-import { LogIngest } from "~/routes/$season/LogIngest";
-import { SeasonMenu } from "~/routes/$season/SeasonMenu";
+import { LogIngest } from "~/components/old/LogIngest";
+import { SeasonMenu } from "~/components/old/SeasonMenu";
 
 interface HeaderProps {
   children?: ReactNode;

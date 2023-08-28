@@ -7,9 +7,9 @@ import type { NavigationStates } from "@remix-run/router";
 import clsx from "clsx";
 import { z } from "zod";
 
+import { Spinner } from "~/components/old/Spinner";
+import { linkClassName } from "~/components/old/tokens";
 import { ingestWarcraftLogsReport } from "~/ingest/log.server";
-import { Spinner } from "~/routes/$season/Spinner";
-import { linkClassName } from "~/routes/$season/tokens";
 import type { Timings } from "~/timing.server";
 import { getServerTimeHeader } from "~/timing.server";
 import { getReportCode } from "~/utils";
@@ -23,7 +23,7 @@ const schema = z.object({
     .startsWith("https://www.warcraftlogs.com/reports/")
     .refine(
       (link) => getReportCode(link),
-      (link) => ({ message: `${link} does not have a valid report code` })
+      (link) => ({ message: `${link} does not have a valid report code` }),
     )
     .transform((link) => getReportCode(link)),
 });
@@ -31,7 +31,6 @@ const schema = z.object({
 const parseLogIngestionForm = (formData: FormData) =>
   parse(formData, {
     schema,
-    acceptMultipleErrors: () => true,
   });
 
 export const action = async ({ request }: DataFunctionArgs) => {
@@ -59,13 +58,13 @@ export const action = async ({ request }: DataFunctionArgs) => {
       headers: {
         [serverTiming]: getServerTimeHeader(timings),
       },
-    }
+    },
   );
 };
 
 const getSubmitButtonClassName = (
   disabled: boolean,
-  navigationState: NavigationStates[keyof NavigationStates]["state"]
+  navigationState: NavigationStates[keyof NavigationStates]["state"],
 ) => {
   const base = linkClassName.replace("flex", "");
   const disabledBase = linkClassName
@@ -75,7 +74,7 @@ const getSubmitButtonClassName = (
       "hover:bg-gray-500",
       `${
         navigationState === "loading" ? "cursor-wait" : "cursor-not-allowed"
-      } grayscale`
+      } grayscale`,
     );
 
   return disabled ? disabledBase : base;
@@ -117,7 +116,7 @@ export const LogIngest = () => {
                 "border-2 border-red-500": warcraftLogsCode.error,
                 "border-0 ring-1 ring-inset ring-gray-300":
                   !warcraftLogsCode.error,
-              }
+              },
             )}
             placeholder="https://www.warcraftlogs.com/reports/..."
             {...conform.input(warcraftLogsCode)}

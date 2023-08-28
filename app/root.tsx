@@ -89,7 +89,7 @@ export const meta: V2_MetaFunction = () => {
   ];
 };
 
-export const loader = (): TypedResponse<{ ENV: Record<string, unknown> }> => {
+export const loader = () => {
   return json({
     ENV: {
       SENTRY_DSN: env.SENTRY_DSN,

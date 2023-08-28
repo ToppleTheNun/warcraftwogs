@@ -2,11 +2,10 @@ import { useNavigation, useSubmit } from "@remix-run/react";
 import { type FormEventHandler } from "react";
 import { useRef } from "react";
 
+import { linkClassName } from "~/components/old/tokens";
 import { type EnhancedSeason } from "~/seasons";
 import { isPresent } from "~/typeGuards";
 import { orderedRegionsBySize } from "~/utils";
-
-import { linkClassName } from "./tokens";
 
 type RegionToggleProps = {
   season: EnhancedSeason;

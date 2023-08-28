@@ -1,1 +1,1 @@
-export { action } from "./$season/LogIngest";
+export { action } from "~/components/old/LogIngest";

@@ -18,8 +18,8 @@ export const clientSchema = z.object({
  */
 export const clientProcessEnv = {
   ...generated,
-  SENTRY_DSN: process.env.SENTRY_DSN,
-  VERCEL_ANALYTICS_ID: process.env.VERCEL_ANALYTICS_ID,
+  SENTRY_DSN: window.ENV.SENTRY_DSN,
+  VERCEL_ANALYTICS_ID: window.ENV.VERCEL_ANALYTICS_ID,
 };
 
 const parsed = clientSchema.safeParse(clientProcessEnv);

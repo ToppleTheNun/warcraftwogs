@@ -1,7 +1,7 @@
 import { Link } from "@remix-run/react";
 
 import { Header as BaseHeader } from "~/components/Header";
-import { RegionToggle } from "~/routes/$season/RegionToggle";
+import { RegionToggle } from "~/components/old/RegionToggle";
 import type { EnhancedSeason } from "~/seasons";
 
 export const Header = ({ season }: { season: EnhancedSeason }): JSX.Element => {

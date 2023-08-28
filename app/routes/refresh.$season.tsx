@@ -1,13 +1,15 @@
-import type { HeadersFunction } from "@remix-run/node";
-import {
-  json,
-  type LoaderArgs,
-  redirect,
-  type TypedResponse,
+import type {
+  HeadersFunction,
+  LoaderArgs,
+  TypedResponse,
 } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
 import { Footer } from "~/components/Footer";
+import { Header } from "~/components/old/Header";
+import { Leaderboard } from "~/components/old/Leaderboard";
+import { basicLinkClassName } from "~/components/old/tokens";
 import {
   cacheControl,
   eTag,
@@ -22,9 +24,6 @@ import {
   determineRegionsToDisplayFromSearchParams,
 } from "~/load.server";
 import { getEnhancedSeason } from "~/models/season.server";
-import { Header } from "~/routes/$season/Header";
-import { Leaderboard } from "~/routes/$season/Leaderboard";
-import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { findSeasonByName } from "~/seasons";
 import type { Timings } from "~/timing.server";
@@ -71,7 +70,7 @@ export const headers: HeadersFunction = ({ loaderHeaders }) => {
   return headers;
 };
 
-export { action } from "./LogIngest";
+export { action } from "~/components/old/LogIngest";
 
 export const loader = async ({
   params,
@@ -97,7 +96,7 @@ export const loader = async ({
 
   const searchParamRegions = await time(
     () => determineRegionsToDisplayFromSearchParams(request),
-    { type: "determineRegionsToDisplayFromSearchParams", timings }
+    { type: "determineRegionsToDisplayFromSearchParams", timings },
   );
 
   const cookieRegions = searchParamRegions
@@ -112,7 +111,7 @@ export const loader = async ({
 
     params.append("regions", cookieRegions.join(searchParamSeparator));
 
-    return redirect(`/${season.slug}?${params.toString()}`, {
+    return redirect(`/refresh/${season.slug}?${params.toString()}`, {
       status: 307,
       headers: {
         [serverTiming]: getServerTimeHeader(timings),
@@ -129,7 +128,7 @@ export const loader = async ({
         season,
         timings,
       }),
-    { type: "getEnhancedSeason", timings }
+    { type: "getEnhancedSeason", timings },
   );
 
   headers[serverTiming] = getServerTimeHeader(timings);

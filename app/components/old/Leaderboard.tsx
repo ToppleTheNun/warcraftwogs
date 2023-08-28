@@ -5,9 +5,9 @@ import format from "date-fns/format";
 import enUS from "date-fns/locale/en-US";
 
 import { ExternalLink } from "~/components/ExternalLink";
+import { basicLinkClassName } from "~/components/old/tokens";
 import type { WordOfGloryLeaderboardEntry } from "~/load.server";
 import { realms } from "~/realms";
-import { basicLinkClassName } from "~/routes/$season/tokens";
 import type { EnhancedSeason } from "~/seasons";
 import { isPresent } from "~/typeGuards";
 
