@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { format } from "prettier";
@@ -15,6 +15,7 @@ export const generated = {
 
 (async () => {
   const formatted = await format(contents, { parser: "typescript" });
+  await mkdir(join(process.cwd(), "app", "env"));
   await writeFile(
     join(process.cwd(), "app", "env", "generated.ts"),
     formatted,

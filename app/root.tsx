@@ -1,3 +1,4 @@
+import { cssBundleHref } from "@remix-run/css-bundle";
 import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
@@ -13,11 +14,14 @@ import { withSentry } from "@sentry/remix";
 import { Analytics } from "@vercel/analytics/react";
 
 import { getEnv } from "~/lib/env.server";
-import stylesheet from "~/tailwind.css";
+import tailwindStylesheetUrl from "~/tailwind.css";
+import { isPresent } from "~/typeGuards";
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: stylesheet },
+    // Preload CSS as a resource to avoid render blocking
+    { rel: "preload", href: tailwindStylesheetUrl, as: "style" },
+    cssBundleHref ? { rel: "preload", href: cssBundleHref, as: "style" } : null,
 
     {
       rel: "apple-touch-icon",
@@ -47,7 +51,11 @@ export const links: LinksFunction = () => {
       href: "/safari-pinned-tab.svg",
       color: "#5bbad5",
     },
-  ];
+
+    // These should match the css preloads above to avoid css as render blocking resource
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
+    cssBundleHref ? { rel: "stylesheet", href: cssBundleHref } : null,
+  ].filter(isPresent);
 };
 
 const title = "Warcraft WoGs";
