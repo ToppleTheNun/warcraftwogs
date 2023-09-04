@@ -1,4 +1,4 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { format } from "prettier";
@@ -13,12 +13,17 @@ export const generated = {
 } as const;
 `;
 
+const ensureDir = async (path: string) => {
+  try {
+    await access(path);
+  } catch (e) {
+    await mkdir(path);
+  }
+};
+
 (async () => {
   const formatted = await format(contents, { parser: "typescript" });
-  await mkdir(join(process.cwd(), "app", "env"));
-  await writeFile(
-    join(process.cwd(), "app", "env", "generated.ts"),
-    formatted,
-    "utf-8",
-  );
+  const pathToEnv = join(process.cwd(), "app", "env");
+  await ensureDir(pathToEnv);
+  await writeFile(join(pathToEnv, "generated.ts"), formatted, "utf-8");
 })();

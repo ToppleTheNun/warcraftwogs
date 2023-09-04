@@ -10,6 +10,7 @@ export type Season = {
   startDates: Record<Regions, number | null>;
   endDates: Record<Regions, number | null>;
   seasonIcon: string;
+  encounterIds: ReadonlyArray<number>;
 };
 
 export type EnhancedSeason = Season & {
@@ -35,6 +36,25 @@ export const seasons: readonly Season[] = [
     },
     seasonIcon:
       "https://wow.zamimg.com/images/wow/icons/small/inv_misc_head_dragon_black_nightmare.jpg",
+    encounterIds: [
+      2687, // Amalgamation Chamber
+      2682, // Assault of the Zaqali
+      2684, // Echo of Neltharion
+      2693, // Forgotten Experiments
+      2688, // Kazzara
+      2683, // Magmorax
+      2680, // Rashok, the Elder
+      2685, // Sarkareth
+      2689, // The Vigilant Steward, Zskarn
+      12520, // Brackenhide Hollow
+      61754, // Freehold
+      12527, // Halls of Infusion
+      61458, // Neltharion's Lair
+      12519, // Neltharus
+      12451, // Uldaman: Legacy of Tyr
+      61841, // The Underrot
+      10657, // The Vortex Pinnacle
+    ],
   },
   {
     name: "DF S1",
@@ -53,6 +73,24 @@ export const seasons: readonly Season[] = [
     },
     seasonIcon:
       "https://wow.zamimg.com/images/wow/icons/small/shaman_pvp_leaderclan.jpg",
+    encounterIds: [
+      2614, // Broodkeeper Diurna
+      2635, // Dathea, Ascended
+      2587, // Eranog
+      2605, // Kurog Grimtotem
+      2590, // Primal Council
+      2607, // Raszageth the Storm-Eater
+      2592, // Sennarth, the Cold Breath
+      2639, // Terros
+      12526, // Algeth'ar Academy
+      12515, // The Azure Vault
+      61571, // Court of Stars
+      61477, // Halls of Valor
+      12516, // The Nokhud Offensive
+      12521, // Ruby Life Pools
+      61176, // Shadowmoon Burial Grounds
+      10960, // Temple of the Jade Serpent
+    ],
   },
 ] as const;
 

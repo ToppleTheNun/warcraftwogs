@@ -10460,6 +10460,18 @@
             "deprecationReason": null
           },
           {
+            "name": "footer",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "JSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "game",
             "description": null,
             "args": [],

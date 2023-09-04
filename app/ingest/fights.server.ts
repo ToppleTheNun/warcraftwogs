@@ -12,15 +12,16 @@ import type {
 import { prisma } from "~/lib/db.server";
 import type { Timings } from "~/lib/timing.server";
 import { time } from "~/lib/timing.server";
+import { findSeasonByTimestamp } from "~/seasons";
 import { isPresent } from "~/typeGuards";
-import { isRegion } from "~/utils";
+import { isRegion, pipe } from "~/utils";
 import { getFights, getPlayerDetails } from "~/wcl/queries";
 import type { PlayerDetail } from "~/wcl/schemas";
 import { playerDetailsDpsHealerTankSchema } from "~/wcl/schemas";
 
 const getBasicReport = async (
   reportID: string,
-  timings: Timings
+  timings: Timings,
 ): Promise<Report | null> => {
   const rawFightData = await time(() => getFights({ reportID }), {
     type: "getFights",
@@ -34,7 +35,7 @@ const getBasicReport = async (
   const reportRegion =
     rawFightData.reportData.report.region?.slug?.toLowerCase();
   const reportStartTime = rawFightData.reportData.report.startTime;
-  const reportEndTime = rawFightData.reportData.report.startTime;
+  const reportEndTime = rawFightData.reportData.report.endTime;
   const title = rawFightData.reportData.report.title;
   if (!reportRegion || !isRegion(reportRegion) || !isPresent(fights)) {
     return null;
@@ -69,15 +70,15 @@ const getBasicReport = async (
 
 const enhanceBasicFight = (
   basicReportFight: ReportFight,
-  playerDetails: PlayerDetail[]
+  playerDetails: PlayerDetail[],
 ): IngestibleReportFight => {
   const friendlyPlayerDetails = basicReportFight.friendlyPlayerIds
     .map<PlayerDetail | undefined>((playerId) =>
-      playerDetails.find((player) => player.id === playerId)
+      playerDetails.find((player) => player.id === playerId),
     )
     .filter(isPresent);
   const friendlyPlayers = sortBy(
-    friendlyPlayerDetails.map((player) => player.guid)
+    friendlyPlayerDetails.map((player) => player.guid),
   ).join(":");
 
   return {
@@ -89,7 +90,7 @@ const enhanceBasicFight = (
 
 const enhanceReport = async (
   basicReport: Report,
-  timings: Timings
+  timings: Timings,
 ): Promise<ReportWithIngestibleFights | null> => {
   const fightIDs = basicReport.reportFights.map((fight) => fight.fightID);
 
@@ -99,11 +100,11 @@ const enhanceReport = async (
         reportID: basicReport.reportID,
         fightIDs,
       }),
-    { type: "getPlayerDetails", timings }
+    { type: "getPlayerDetails", timings },
   );
 
   const playerDetailsResult = playerDetailsDpsHealerTankSchema.safeParse(
-    rawPlayerDetails.reportData?.report?.playerDetails?.data?.playerDetails
+    rawPlayerDetails.reportData?.report?.playerDetails?.data?.playerDetails,
   );
   if (!playerDetailsResult.success) {
     return null;
@@ -116,26 +117,46 @@ const enhanceReport = async (
   ];
   const reportFightsWithDetails =
     basicReport.reportFights.map<IngestibleReportFight>((fight) =>
-      enhanceBasicFight(fight, playerDetails)
+      enhanceBasicFight(fight, playerDetails),
     );
 
   return { ...basicReport, ingestibleFights: reportFightsWithDetails };
 };
 
 export const filterReportFightsToOnlyThoseWithPaladins = (
-  enhancedReport: ReportWithIngestibleFights
+  enhancedReport: ReportWithIngestibleFights,
 ): ReportWithIngestibleFights => ({
   ...enhancedReport,
   ingestibleFights: enhancedReport.ingestibleFights.filter((fight) =>
     fight.friendlyPlayerDetails.some(
-      (player) => player.type.toLowerCase() === "paladin"
-    )
+      (player) => player.type.toLowerCase() === "paladin",
+    ),
   ),
 });
 
+const isFightInSeason = (fight: IngestibleReportFight): boolean => {
+  const season = findSeasonByTimestamp(fight.startTime);
+  if (!season) {
+    return false;
+  }
+  return season.encounterIds.includes(fight.encounterID);
+};
+
+export const filterReportFightsToOnlyThoseInSeason = (
+  enhanceReport: ReportWithIngestibleFights,
+): ReportWithIngestibleFights => ({
+  ...enhanceReport,
+  ingestibleFights: enhanceReport.ingestibleFights.filter(isFightInSeason),
+});
+
+export const filterIngestibleReportFights = pipe(
+  filterReportFightsToOnlyThoseInSeason,
+  filterReportFightsToOnlyThoseWithPaladins,
+);
+
 export const ingestFight = async (
   reportFight: IngestibleReportFight,
-  timings: Timings
+  timings: Timings,
 ): Promise<IngestedReportFight> => {
   const existingFight = await time(
     () =>
@@ -155,7 +176,7 @@ export const ingestFight = async (
           region: reportFight.region,
         },
       }),
-    { type: "prisma.fight.findFirst", timings }
+    { type: "prisma.fight.findFirst", timings },
   );
   if (existingFight) {
     return { ...reportFight, fight: existingFight };
@@ -174,7 +195,7 @@ export const ingestFight = async (
           region: reportFight.region,
         },
       }),
-    { type: "prisma.fight.create", timings }
+    { type: "prisma.fight.create", timings },
   );
 
   return { ...reportFight, fight: createdFight };
@@ -182,13 +203,13 @@ export const ingestFight = async (
 
 export const ingestFights = (
   reportFights: IngestibleReportFight[],
-  timings: Timings
+  timings: Timings,
 ): Promise<IngestedReportFight[]> =>
   Promise.all(reportFights.map((fight) => ingestFight(fight, timings)));
 
 export const ingestFightsFromReport = async (
   reportID: string,
-  timings: Timings
+  timings: Timings,
 ): Promise<ReportWithIngestedFights | null> => {
   const basicReport = await getBasicReport(reportID, timings);
   if (!basicReport) {
@@ -200,12 +221,11 @@ export const ingestFightsFromReport = async (
     return null;
   }
 
-  const filteredEnhancedReport =
-    filterReportFightsToOnlyThoseWithPaladins(enhancedReport);
+  const filteredEnhancedReport = filterIngestibleReportFights(enhancedReport);
 
   const ingestedFights = await ingestFights(
     filteredEnhancedReport.ingestibleFights,
-    timings
+    timings,
   );
 
   return { ...enhancedReport, ingestedFights };

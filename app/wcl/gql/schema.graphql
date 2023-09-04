@@ -4311,4 +4311,5 @@ type ViewModels {
     encounterSlug: String
     affixesSlug: String
   ): JSON
+  footer: JSON
 }

@@ -3,6 +3,7 @@ query getFights($reportID: String!) {
     report(code: $reportID) {
       title
       startTime
+      endTime
 
       region {
         slug
@@ -26,6 +27,7 @@ query getFightsById($reportID: String!, $fightIDs: [Int]!) {
     report(code: $reportID) {
       title
       startTime
+      endTime
 
       region {
         slug

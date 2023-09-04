@@ -6,7 +6,7 @@ export const getReportCode = (input: string): string | undefined => {
   const match = input
     .trim()
     .match(
-      /^(.*reports\/)?((?:[a:]{2})([a-zA-Z0-9]{16})|([a-zA-Z0-9]{16}))\/?(#.*)?$/
+      /^(.*reports\/)?((?:[a:]{2})([a-zA-Z0-9]{16})|([a-zA-Z0-9]{16}))\/?(#.*)?$/,
     );
   return match?.at(2);
 };
@@ -29,3 +29,8 @@ export const isWithinTolerance = ({
   const max = toCheck + tolerance;
   return min <= original && original <= max;
 };
+
+export const pipe =
+  <T>(...fns: Array<(arg: T) => T>) =>
+  (value: T) =>
+    fns.reduce((acc, fn) => fn(acc), value);

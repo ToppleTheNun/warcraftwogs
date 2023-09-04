@@ -1868,6 +1868,7 @@ export type ViewModels = {
   buildsZonePage?: Maybe<Scalars["JSON"]["output"]>;
   buildsZonePageSlugs?: Maybe<Scalars["JSON"]["output"]>;
   cmsNavigation?: Maybe<Scalars["JSON"]["output"]>;
+  footer?: Maybe<Scalars["JSON"]["output"]>;
   game?: Maybe<Scalars["JSON"]["output"]>;
   googleAnalytics?: Maybe<Scalars["JSON"]["output"]>;
   header?: Maybe<Scalars["JSON"]["output"]>;
@@ -2036,6 +2037,7 @@ export type GetFightsQuery = {
       __typename?: "Report";
       title: string;
       startTime: number;
+      endTime: number;
       region?: { __typename?: "Region"; slug: string } | null;
       fights?: Array<{
         __typename?: "ReportFight";
@@ -2065,6 +2067,7 @@ export type GetFightsByIdQuery = {
       __typename?: "Report";
       title: string;
       startTime: number;
+      endTime: number;
       region?: { __typename?: "Region"; slug: string } | null;
       fights?: Array<{
         __typename?: "ReportFight";
@@ -2157,6 +2160,7 @@ export const GetFightsDocument = gql`
       report(code: $reportID) {
         title
         startTime
+        endTime
         region {
           slug
         }
@@ -2178,6 +2182,7 @@ export const GetFightsByIdDocument = gql`
       report(code: $reportID) {
         title
         startTime
+        endTime
         region {
           slug
         }
