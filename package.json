@@ -3,7 +3,7 @@
   "author": "Richard Harrah",
   "license": "MIT",
   "private": true,
-  "packageManager": "pnpm@8.6.8",
+  "packageManager": "pnpm@8.10.5",
   "engines": {
     "node": ">=18"
   },
