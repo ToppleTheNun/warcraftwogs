@@ -110,8 +110,8 @@ dependencies:
 
 devDependencies:
   '@antfu/ni':
-    specifier: 0.21.9
-    version: 0.21.9
+    specifier: 0.21.12
+    version: 0.21.12
   '@graphql-codegen/cli':
     specifier: 5.0.0
     version: 5.0.0(@types/node@20.9.2)(graphql@16.8.1)
@@ -222,8 +222,8 @@ packages:
       '@jridgewell/trace-mapping': 0.3.20
     dev: true
 
-  /@antfu/ni@0.21.9:
-    resolution: {integrity: sha512-zlwQy574YEYl9ssWMV98ADxobU5wePdtyaOeQ5jgzdV8WldPcK+Osqd1SeQwEWjN0Io0GKiqpQzKZXVgxU1jPg==}
+  /@antfu/ni@0.21.12:
+    resolution: {integrity: sha512-2aDL3WUv8hMJb2L3r/PIQWsTLyq7RQr3v9xD16fiz6O8ys1xEyLhhTOv8gxtZvJiTzjTF5pHoArvRdesGL1DMQ==}
     hasBin: true
     dev: true
 
