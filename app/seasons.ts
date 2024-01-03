@@ -18,21 +18,72 @@ export type EnhancedSeason = Season & {
   regionsToDisplay: Regions[];
 };
 
+function offsetByRegion(timestamp: number, region: Regions): number {
+  switch (region) {
+    case "us": {
+      return timestamp;
+    }
+    case "eu": {
+      return timestamp + 46_800_000;
+    }
+    case "kr":
+    case "tw":
+      return timestamp + 111_600_000;
+  }
+}
+
 export const seasons: readonly Season[] = [
   {
-    name: "DF S2",
-    slug: "df-season-2",
+    name: "DF S3",
+    slug: "df-season-3",
     startDates: {
-      us: 1_683_644_400_000,
-      eu: 1_683_691_200_000,
-      kr: 1_683_759_600_000,
-      tw: 1_683_759_600_000,
+      us: offsetByRegion(1_699_974_000_000, "us"),
+      eu: offsetByRegion(1_699_974_000_000, "eu"),
+      kr: offsetByRegion(1_699_974_000_000, "kr"),
+      tw: offsetByRegion(1_699_974_000_000, "tw"),
     },
     endDates: {
       us: UNKNOWN_SEASON_START_OR_ENDING,
       eu: UNKNOWN_SEASON_START_OR_ENDING,
       kr: UNKNOWN_SEASON_START_OR_ENDING,
       tw: UNKNOWN_SEASON_START_OR_ENDING,
+    },
+    seasonIcon:
+      "https://wow.zamimg.com/images/wow/icons/small/inv_misc_head_dragon_01.jpg",
+    encounterIds: [
+      2728, // Council of Dreams
+      2677, // Fyrakk, the Blazing
+      2820, // Gnarlroot
+      2709, // Igira the Cruel
+      2731, // Larodar, Keeper of the Flame
+      2708, // Nymue, Weaver of the Cycle
+      2824, // Smolderon
+      2786, // Tindral Sageswift, Seer of Flame
+      2737, // Volcoross
+      61763, // Atal'Dazar
+      61501, // Black Rook Hold
+      61466, // Darkheart Thicket
+      61279, // Everbloom
+      12579, // Dawn of the Infinites: Galakrond's Fall
+      12580, // Dawn of the Infinites: Murozond's Rise
+      10643, // Throne of the Tides
+      61862, // Waycrest Manor
+    ],
+  },
+  {
+    name: "DF S2",
+    slug: "df-season-2",
+    startDates: {
+      us: offsetByRegion(1_683_644_400_000, "us"),
+      eu: offsetByRegion(1_683_644_400_000, "eu"),
+      kr: offsetByRegion(1_683_644_400_000, "kr"),
+      tw: offsetByRegion(1_683_644_400_000, "tw"),
+    },
+    endDates: {
+      us: offsetByRegion(1_699_336_800_000, "us"),
+      eu: offsetByRegion(1_699_336_800_000, "eu"),
+      kr: offsetByRegion(1_699_336_800_000, "kr"),
+      tw: offsetByRegion(1_699_336_800_000, "tw"),
     },
     seasonIcon:
       "https://wow.zamimg.com/images/wow/icons/small/inv_misc_head_dragon_black_nightmare.jpg",
@@ -60,16 +111,16 @@ export const seasons: readonly Season[] = [
     name: "DF S1",
     slug: "df-season-1",
     startDates: {
-      us: 1_670_943_600_000,
-      eu: 1_670_990_400_000,
-      kr: 1_671_058_800_000,
-      tw: 1_671_058_800_000,
+      us: offsetByRegion(1_670_943_600_000, "us"),
+      eu: offsetByRegion(1_670_943_600_000, "eu"),
+      kr: offsetByRegion(1_670_943_600_000, "kr"),
+      tw: offsetByRegion(1_670_943_600_000, "tw"),
     },
     endDates: {
-      us: 1_683_007_200_000,
-      eu: 1_683_057_600_000,
-      kr: 1_683_118_800_000,
-      tw: 1_683_118_800_000,
+      us: offsetByRegion(1_683_007_200_000, "us"),
+      eu: offsetByRegion(1_683_007_200_000, "eu"),
+      kr: offsetByRegion(1_683_007_200_000, "kr"),
+      tw: offsetByRegion(1_683_007_200_000, "tw"),
     },
     seasonIcon:
       "https://wow.zamimg.com/images/wow/icons/small/shaman_pvp_leaderclan.jpg",
@@ -113,16 +164,16 @@ export const hasSeasonEndedForAllRegions = (slug: string): boolean => {
 };
 
 export const findSeasonByTimestamp = (
-  timestamp = Date.now()
+  timestamp = Date.now(),
 ): Season | null => {
   const season = seasons.find(
     (season) =>
       Object.values(season.startDates).some(
-        (start) => start && timestamp >= start
+        (start) => start && timestamp >= start,
       ) &&
       Object.values(season.endDates).some(
-        (end) => end === UNKNOWN_SEASON_START_OR_ENDING || end > timestamp
-      )
+        (end) => end === UNKNOWN_SEASON_START_OR_ENDING || end > timestamp,
+      ),
   );
 
   return season ?? null;
@@ -138,7 +189,7 @@ export const findSeasonByName = (slug: string): Season | null => {
 
     const mostRecentlyStartedSeason = seasons.find(
       (season) =>
-        season.startDates.us !== null && Date.now() >= season.startDates.us
+        season.startDates.us !== null && Date.now() >= season.startDates.us,
     );
 
     if (mostRecentlyStartedSeason) {
