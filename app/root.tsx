@@ -1,5 +1,5 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -60,7 +60,7 @@ export const links: LinksFunction = () => {
 
 const title = "Warcraft WoGs";
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const url = "https://warcraftwogs.com/";
   const description = "Word of Glory leaderboard for World of Warcraft.";
 

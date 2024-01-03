@@ -1,8 +1,8 @@
 import type { Regions } from "@prisma/client";
 import { useNavigation } from "@remix-run/react";
 import clsx from "clsx";
-import format from "date-fns/format";
-import enUS from "date-fns/locale/en-US";
+import { format } from "date-fns/format";
+import { enUS } from "date-fns/locale/en-US";
 
 import { ExternalLink } from "~/components/ExternalLink";
 import { basicLinkClassName } from "~/components/old/tokens";

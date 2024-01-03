@@ -1,5 +1,5 @@
 import type { Regions } from "@prisma/client";
-import add from "date-fns/add";
+import { add } from "date-fns/add";
 
 import type { Timings } from "~/lib/timing.server";
 import { loadDataForRegion } from "~/load.server";

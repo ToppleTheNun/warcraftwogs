@@ -1,11 +1,11 @@
 import { PassThrough } from "node:stream";
 
-import type { DataFunctionArgs, EntryContext } from "@remix-run/node";
+import type { EntryContext } from "@remix-run/node";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
-import { captureException, captureRemixServerException } from "@sentry/remix";
+import { wrapRemixHandleError } from "@sentry/remix";
 import { handleRequest as handleVercelRemixRequest } from "@vercel/remix";
-import isbot from "isbot";
+import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
 import { getEnv, init } from "./lib/env.server";
@@ -19,17 +19,7 @@ if (ENV.MODE === "production" && ENV.SENTRY_DSN) {
   import("./lib/monitoring.server").then(({ init }) => init());
 }
 
-export function handleError(
-  error: unknown,
-  { request }: DataFunctionArgs,
-): void {
-  if (error instanceof Error) {
-    captureRemixServerException(error, "remix.server.ts", request);
-  } else {
-    // Optionally capture non-Error objects
-    captureException(error);
-  }
-}
+export const handleError = wrapRemixHandleError;
 
 export default function handleRequest(
   request: Request,
@@ -45,7 +35,7 @@ export default function handleRequest(
       remixContext,
     );
   }
-  return isbot(request.headers.get("user-agent"))
+  return isbot(request.headers.get("user-agent") ?? "")
     ? handleBotRequest(
         request,
         responseStatusCode,
