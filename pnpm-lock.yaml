@@ -153,7 +153,7 @@ devDependencies:
     version: 4.2.1(vite@5.0.10)
   autoprefixer:
     specifier: 10.4.16
-    version: 10.4.16(postcss@8.4.31)
+    version: 10.4.16(postcss@8.4.32)
   eslint:
     specifier: 8.56.0
     version: 8.56.0
@@ -173,8 +173,8 @@ devDependencies:
     specifier: 0.18.0
     version: 0.18.0(prettier@3.1.1)
   prettier-plugin-tailwindcss:
-    specifier: 0.5.10
-    version: 0.5.10(prettier@3.1.1)
+    specifier: 0.5.11
+    version: 0.5.11(prettier@3.1.1)
   prisma:
     specifier: 5.7.1
     version: 5.7.1
@@ -5569,7 +5569,7 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /autoprefixer@10.4.16(postcss@8.4.31):
+  /autoprefixer@10.4.16(postcss@8.4.32):
     resolution: {integrity: sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -5581,7 +5581,7 @@ packages:
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.31
+      postcss: 8.4.32
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -9997,8 +9997,8 @@ packages:
       prettier: 3.1.1
     dev: true
 
-  /prettier-plugin-tailwindcss@0.5.10(prettier@3.1.1):
-    resolution: {integrity: sha512-9UGSejqFxGG6brYjFfTYlJ8zs4L/lvZg1AngFfaC5Fs1otSskASv5IWKmjPu5MlABQUtTKtMArKyYr/hWpXSUg==}
+  /prettier-plugin-tailwindcss@0.5.11(prettier@3.1.1):
+    resolution: {integrity: sha512-AvI/DNyMctyyxGOjyePgi/gqj5hJYClZ1avtQvLlqMT3uDZkRbi4HhGUpok3DRzv9z7Lti85Kdj3s3/1CeNI0w==}
     engines: {node: '>=14.21.3'}
     peerDependencies:
       '@ianvs/prettier-plugin-sort-imports': '*'
