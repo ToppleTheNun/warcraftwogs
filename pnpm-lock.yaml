@@ -72,8 +72,8 @@ dependencies:
     specifier: 10.0.3
     version: 10.0.3
   isbot:
-    specifier: 4.1.1
-    version: 4.1.1
+    specifier: 4.4.0
+    version: 4.4.0
   kleur:
     specifier: 4.1.5
     version: 4.1.5
@@ -153,7 +153,7 @@ devDependencies:
     version: 4.2.1(vite@5.0.10)
   autoprefixer:
     specifier: 10.4.16
-    version: 10.4.16(postcss@8.4.31)
+    version: 10.4.16(postcss@8.4.32)
   eslint:
     specifier: 8.56.0
     version: 8.56.0
@@ -5569,7 +5569,7 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /autoprefixer@10.4.16(postcss@8.4.31):
+  /autoprefixer@10.4.16(postcss@8.4.32):
     resolution: {integrity: sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -5581,7 +5581,7 @@ packages:
       fraction.js: 4.3.7
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.31
+      postcss: 8.4.32
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -8315,8 +8315,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /isbot@4.1.1:
-    resolution: {integrity: sha512-kN+jdL5T+4kMfENZzLwv81KFymnpuv49rUQpp6jwHQhqMG++f1XPvNBgFRO9N0uaBqqft1d+Vn1Jls/TDhJpDw==}
+  /isbot@4.4.0:
+    resolution: {integrity: sha512-8ZvOWUA68kyJO4hHJdWjyreq7TYNWTS9y15IzeqVdKxR9pPr3P/3r9AHcoIv9M0Rllkao5qWz2v1lmcyKIVCzQ==}
     engines: {node: '>=18'}
     dev: false
 

@@ -49,7 +49,7 @@
     "graphql-request": "6.1.0",
     "graphql-tag": "2.12.6",
     "immer": "10.0.3",
-    "isbot": "4.1.1",
+    "isbot": "4.4.0",
     "kleur": "4.1.5",
     "lodash": "4.17.21",
     "lucide-react": "0.303.0",
