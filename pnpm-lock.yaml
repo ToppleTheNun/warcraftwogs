@@ -72,8 +72,8 @@ dependencies:
     specifier: 10.0.3
     version: 10.0.3
   isbot:
-    specifier: 4.1.1
-    version: 4.1.1
+    specifier: 4.4.0
+    version: 4.4.0
   kleur:
     specifier: 4.1.5
     version: 4.1.5
@@ -8100,8 +8100,8 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
-  /isbot@4.1.1:
-    resolution: {integrity: sha512-kN+jdL5T+4kMfENZzLwv81KFymnpuv49rUQpp6jwHQhqMG++f1XPvNBgFRO9N0uaBqqft1d+Vn1Jls/TDhJpDw==}
+  /isbot@4.4.0:
+    resolution: {integrity: sha512-8ZvOWUA68kyJO4hHJdWjyreq7TYNWTS9y15IzeqVdKxR9pPr3P/3r9AHcoIv9M0Rllkao5qWz2v1lmcyKIVCzQ==}
     engines: {node: '>=18'}
     dev: false
 
