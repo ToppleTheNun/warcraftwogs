@@ -31,7 +31,7 @@
     "@conform-to/react": "0.9.1",
     "@conform-to/zod": "0.9.1",
     "@prisma/client": "5.10.2",
-    "@react-types/shared": "3.22.0",
+    "@react-types/shared": "3.22.1",
     "@remix-run/css-bundle": "2.4.1",
     "@remix-run/node": "2.4.1",
     "@remix-run/react": "2.4.1",
