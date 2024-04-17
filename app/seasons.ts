@@ -34,6 +34,60 @@ function offsetByRegion(timestamp: number, region: Regions): number {
 
 export const seasons: readonly Season[] = [
   {
+    name: "DF S4",
+    slug: "df-season-4",
+    startDates: {
+      us: offsetByRegion(1_713_884_400_000, "us"),
+      eu: offsetByRegion(1_713_884_400_000, "eu"),
+      kr: offsetByRegion(1_713_884_400_000, "kr"),
+      tw: offsetByRegion(1_713_884_400_000, "tw"),
+    },
+    endDates: {
+      us: UNKNOWN_SEASON_START_OR_ENDING,
+      eu: UNKNOWN_SEASON_START_OR_ENDING,
+      kr: UNKNOWN_SEASON_START_OR_ENDING,
+      tw: UNKNOWN_SEASON_START_OR_ENDING,
+    },
+    seasonIcon:
+      "https://assets.rpglogs.com/img/warcraft/zones/zone-36.png",
+    encounterIds: [
+      2614, // Broodkeeper Diurna
+      2635, // Dathea, Ascended
+      2587, // Eranog
+      2605, // Kurog Grimtotem
+      2590, // Primal Council
+      2607, // Raszageth the Storm-Eater
+      2592, // Sennarth, the Cold Breath
+      2639, // Terros
+      2687, // Amalgamation Chamber
+      2682, // Assault of the Zaqali
+      2684, // Echo of Neltharion
+      2693, // Forgotten Experiments
+      2688, // Kazzara
+      2683, // Magmorax
+      2680, // Rashok, the Elder
+      2685, // Sarkareth
+      2689, // The Vigilant Steward, Zskarn
+      2728, // Council of Dreams
+      2677, // Fyrakk, the Blazing
+      2820, // Gnarlroot
+      2709, // Igira the Cruel
+      2731, // Larodar, Keeper of the Flame
+      2708, // Nymue, Weaver of the Cycle
+      2824, // Smolderon
+      2786, // Tindral Sageswift, Seer of Flame
+      2737, // Volcoross
+      62526, // Algeth'ar Academy
+      62515, // The Azure Vault
+      62516, // The Nokhud Offensive
+      62521, // Ruby Life Pools
+      62520, // Brackenhide Hollow
+      62527, // Halls of Infusion
+      62519, // Neltharus
+      62451, // Uldaman: Legacy of Tyr
+    ],
+  },
+  {
     name: "DF S3",
     slug: "df-season-3",
     startDates: {
@@ -43,13 +97,13 @@ export const seasons: readonly Season[] = [
       tw: offsetByRegion(1_699_974_000_000, "tw"),
     },
     endDates: {
-      us: UNKNOWN_SEASON_START_OR_ENDING,
-      eu: UNKNOWN_SEASON_START_OR_ENDING,
-      kr: UNKNOWN_SEASON_START_OR_ENDING,
-      tw: UNKNOWN_SEASON_START_OR_ENDING,
+      us: offsetByRegion(1_713_848_400_000, "us"),
+      eu: offsetByRegion(1_713_848_400_000, "eu"),
+      kr: offsetByRegion(1_713_848_400_000, "kr"),
+      tw: offsetByRegion(1_713_848_400_000, "tw"),
     },
     seasonIcon:
-      "https://wow.zamimg.com/images/wow/icons/small/inv_misc_head_dragon_01.jpg",
+      "https://assets.rpglogs.com/img/warcraft/zones/zone-36.png",
     encounterIds: [
       2728, // Council of Dreams
       2677, // Fyrakk, the Blazing
@@ -86,7 +140,7 @@ export const seasons: readonly Season[] = [
       tw: offsetByRegion(1_699_336_800_000, "tw"),
     },
     seasonIcon:
-      "https://wow.zamimg.com/images/wow/icons/small/inv_misc_head_dragon_black_nightmare.jpg",
+      "https://assets.rpglogs.com/img/warcraft/zones/zone-34.png",
     encounterIds: [
       2687, // Amalgamation Chamber
       2682, // Assault of the Zaqali
