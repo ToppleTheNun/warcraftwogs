@@ -30,8 +30,8 @@ dependencies:
     specifier: 2.4.1
     version: 2.4.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.3.3)
   '@remix-run/router':
-    specifier: 1.15.1
-    version: 1.15.1
+    specifier: 1.15.3
+    version: 1.15.3
   '@remix-run/serve':
     specifier: 2.4.1
     version: 2.4.1(typescript@5.3.3)
@@ -4235,8 +4235,8 @@ packages:
     resolution: {integrity: sha512-Qg4DMQsfPNAs88rb2xkdk03N3bjK4jgX5fR24eHCTR9q6PrhZQZ4UJBPzCHJkIpTRN1UKxx2DzjZmnC+7Lj0Ow==}
     engines: {node: '>=14.0.0'}
 
-  /@remix-run/router@1.15.1:
-    resolution: {integrity: sha512-zcU0gM3z+3iqj8UX45AmWY810l3oUmXM7uH4dt5xtzvMhRtYVhKGOmgOd1877dOPPepfCjUv57w+syamWIYe7w==}
+  /@remix-run/router@1.15.3:
+    resolution: {integrity: sha512-Oy8rmScVrVxWZVOpEF57ovlnhpZ8CCPlnIIumVcV9nFdiSIrus99+Lw78ekXyGvVDlIsFJbSfmSovJUhCWYV3w==}
     engines: {node: '>=14.0.0'}
     dev: false
 
