@@ -102,8 +102,8 @@ dependencies:
     specifier: 1.0.7
     version: 1.0.7(tailwindcss@3.4.1)
   web-vitals:
-    specifier: 3.5.1
-    version: 3.5.1
+    specifier: 3.5.2
+    version: 3.5.2
   zod:
     specifier: 3.22.4
     version: 3.22.4
@@ -11674,8 +11674,8 @@ packages:
     resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
     engines: {node: '>= 8'}
 
-  /web-vitals@3.5.1:
-    resolution: {integrity: sha512-xQ9lvIpfLxUj0eSmT79ZjRoU5wIRfIr7pNukL7ZE4EcWZSmfZQqOlhuAGfkVa3EFmzPHZhWhXfm2i5ys+THVPg==}
+  /web-vitals@3.5.2:
+    resolution: {integrity: sha512-c0rhqNcHXRkY/ogGDJQxZ9Im9D19hDihbzSQJrsioex+KnFgmMzBiy57Z1EjkhX/+OjyBpclDCzz2ITtjokFmg==}
     dev: false
 
   /webcrypto-core@1.7.7:
