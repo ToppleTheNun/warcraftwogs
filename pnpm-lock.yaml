@@ -13,7 +13,7 @@ dependencies:
     version: 0.9.1(react@18.2.0)
   '@conform-to/zod':
     specifier: 0.9.1
-    version: 0.9.1(@conform-to/dom@0.9.1)(zod@3.22.4)
+    version: 0.9.1(@conform-to/dom@0.9.1)(zod@4.6.6)
   '@prisma/client':
     specifier: 5.10.2
     version: 5.10.2(prisma@5.10.2)
@@ -105,8 +105,8 @@ dependencies:
     specifier: 3.5.2
     version: 3.5.2
   zod:
-    specifier: 3.22.4
-    version: 3.22.4
+    specifier: 4.6.6
+    version: 4.6.6
 
 devDependencies:
   '@antfu/ni':
@@ -1158,14 +1158,14 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@conform-to/zod@0.9.1(@conform-to/dom@0.9.1)(zod@3.22.4):
+  /@conform-to/zod@0.9.1(@conform-to/dom@0.9.1)(zod@4.6.6):
     resolution: {integrity: sha512-4hWBGzRpSd4RrlBFRXjS6QQ2MWFpMZDbDwz8H/xiq38Xl5yaL1RSZMhOJ4pmsmy8CIKghs78qvaD8ltTFlrNvQ==}
     peerDependencies:
       '@conform-to/dom': 0.9.1
       zod: ^3.21.0
     dependencies:
       '@conform-to/dom': 0.9.1
-      zod: 3.22.4
+      zod: 4.6.6
     dev: false
 
   /@cush/relative@1.0.0:
@@ -11962,8 +11962,8 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  /zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
     dev: false
 
   /zwitch@2.0.4:
